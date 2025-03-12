@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Scaffold
@@ -28,13 +30,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Lifecycle
-import kotlinx.coroutines.CoroutineScope
 import uz.payme.otabek.utils.MyEventListener
 import uz.payme.otabek.R
-import uz.payme.otabek.data.AppDataStore
 import uz.payme.otabek.data.AppDataStoreImpl
+import uz.payme.otabek.presentation.screens.main.uiStates.ButtonUiState
+import uz.payme.otabek.presentation.screens.main.uiStates.CirclesUiState
+import uz.payme.otabek.presentation.screens.main.uiStates.TimeUiState
 import uz.payme.otabek.utils.formatTime
 import uz.payme.otabek.ui.theme.PaymeStopwatchTheme
 
@@ -51,14 +53,18 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val timeState = viewModel.timeUiState.collectAsState()
                     val buttonState = viewModel.buttonUiState.collectAsState()
+                    val circlesState = viewModel.circlesUiState.collectAsState()
                     MainScreen(
                         modifier = Modifier.padding(innerPadding),
                         timeState = timeState,
                         buttonState = buttonState,
+                        circlesState = circlesState,
                         start = { viewModel.start() },
-                        pause = { viewModel.pause() },
                         reset = { viewModel.reset() },
-                        saveTime = { viewModel.saveTime() })
+                        saveState = { viewModel.saveState() },
+                        getState = { viewModel.getState() },
+                        setCircles = { viewModel.setCircle() },
+                        clearCircles = { viewModel.clearCircles() })
                 }
             }
         }
@@ -71,10 +77,13 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     timeState: State<TimeUiState>,
     buttonState: State<ButtonUiState>,
+    circlesState: State<CirclesUiState>,
     start: () -> Unit,
-    pause: () -> Unit,
     reset: () -> Unit,
-    saveTime: () -> Unit,
+    saveState: () -> Unit,
+    getState: () -> Unit,
+    setCircles: () -> Unit,
+    clearCircles: () -> Unit
 ) {
     val context = LocalContext.current
     val startStopPlayer = MediaPlayer.create(context, R.raw.boop)
@@ -89,10 +98,28 @@ fun MainScreen(
         verticalArrangement = Arrangement.SpaceAround
     ) {
         Text(text = formatTime(timeState.value.time), color = Color.Black, fontSize = 64.sp)
+        if (circlesState.value.list.isNotEmpty()) {
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(items = circlesState.value.list.reversed()) { item ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = formatTime(item), fontSize = 16.sp)
+                    }
+                }
+            }
+        }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
             Button(
                 onClick = {
-                    reset()
+                    if (timeState.value.wasRunning) {
+                        setCircles()
+                    } else {
+                        reset()
+                        clearCircles()
+                    }
                     resetPlayer.start()
                 }, colors = ButtonColors(
                     containerColor = Color.LightGray,
@@ -132,14 +159,8 @@ fun MainScreen(
     }
     MyEventListener {
         when (it) {
-            Lifecycle.Event.ON_RESUME -> {
-                start()
-            }
-
-            Lifecycle.Event.ON_PAUSE -> {
-                pause()
-                saveTime()
-            }
+            Lifecycle.Event.ON_RESUME -> getState()
+            Lifecycle.Event.ON_PAUSE -> saveState()
 
             else -> {
 
