@@ -1,4 +1,4 @@
-package uz.payme.otabek
+package uz.payme.otabek.utils
 
 import android.annotation.SuppressLint
 

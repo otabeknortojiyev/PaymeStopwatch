@@ -1,10 +1,11 @@
-package uz.payme.otabek
+package uz.payme.otabek.presentation.screens.main
 
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,42 +18,71 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.Lifecycle
+import kotlinx.coroutines.CoroutineScope
+import uz.payme.otabek.utils.MyEventListener
+import uz.payme.otabek.R
+import uz.payme.otabek.data.AppDataStore
+import uz.payme.otabek.data.AppDataStoreImpl
+import uz.payme.otabek.utils.formatTime
 import uz.payme.otabek.ui.theme.PaymeStopwatchTheme
 
 
 class MainActivity : ComponentActivity() {
+    val viewModel: AppViewModel by viewModels {
+        AppViewModelFactory(AppDataStoreImpl(this))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             PaymeStopwatchTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    val timeState = viewModel.timeUiState.collectAsState()
+                    val buttonState = viewModel.buttonUiState.collectAsState()
                     MainScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                        modifier = Modifier.padding(innerPadding),
+                        timeState = timeState,
+                        buttonState = buttonState,
+                        start = { viewModel.start() },
+                        pause = { viewModel.pause() },
+                        reset = { viewModel.reset() },
+                        saveTime = { viewModel.saveTime() })
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    val viewModel: AppViewModel = viewModel()
-    val timeState = viewModel.timeUiState.collectAsState()
-    val buttonState = viewModel.buttonUiState.collectAsState()
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    timeState: State<TimeUiState>,
+    buttonState: State<ButtonUiState>,
+    start: () -> Unit,
+    pause: () -> Unit,
+    reset: () -> Unit,
+    saveTime: () -> Unit,
+) {
+    val context = LocalContext.current
+    val startStopPlayer = MediaPlayer.create(context, R.raw.boop)
+    val resetPlayer = MediaPlayer.create(context, R.raw.breeze)
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,7 +92,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
             Button(
                 onClick = {
-                    viewModel.pause()
+                    reset()
+                    resetPlayer.start()
                 }, colors = ButtonColors(
                     containerColor = Color.LightGray,
                     contentColor = Color.DarkGray,
@@ -80,7 +111,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
             Button(
                 onClick = {
-                    viewModel.start()
+                    start()
+                    startStopPlayer.start()
                 }, colors = ButtonColors(
                     containerColor = Color.Blue,
                     contentColor = Color.White,
@@ -98,20 +130,20 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
     }
-//    MyEventListener {
-//        when (it) {
-//            Lifecycle.Event.ON_RESUME -> {
-//                viewModel.start()
-//            }
-//
-//            Lifecycle.Event.ON_PAUSE -> {
-//                viewModel.pause()
-//
-//            }
-//
-//            else -> {
-//
-//            }
-//        }
-//    }
+    MyEventListener {
+        when (it) {
+            Lifecycle.Event.ON_RESUME -> {
+                start()
+            }
+
+            Lifecycle.Event.ON_PAUSE -> {
+                pause()
+                saveTime()
+            }
+
+            else -> {
+
+            }
+        }
+    }
 }
