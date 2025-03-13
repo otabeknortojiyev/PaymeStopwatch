@@ -1,20 +1,25 @@
 package uz.payme.otabek.presentation.screens.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import uz.payme.otabek.data.AppDataStore
-import uz.payme.otabek.presentation.screens.main.uiStates.ButtonUiState
-import uz.payme.otabek.presentation.screens.main.uiStates.CirclesUiState
-import uz.payme.otabek.presentation.screens.main.uiStates.TimeUiState
+import uz.payme.otabek.presentation.screens.main.AppViewModelContract.Intent
+import uz.payme.otabek.presentation.screens.main.AppViewModelContract.Intent.ClickLeftButton
+import uz.payme.otabek.presentation.screens.main.AppViewModelContract.Intent.GetState
+import uz.payme.otabek.presentation.screens.main.AppViewModelContract.Intent.SaveState
+import uz.payme.otabek.presentation.screens.main.AppViewModelContract.Intent.Start
+import uz.payme.otabek.presentation.screens.main.AppViewModelContract.UiStates
 import uz.payme.otabek.utils.ButtonNames
 
 class AppViewModel(val dataStore: AppDataStore) : ViewModel() {
@@ -24,31 +29,36 @@ class AppViewModel(val dataStore: AppDataStore) : ViewModel() {
     private var isContinue: Boolean = false
     private var isFirstTime: Boolean = true
 
-    private val _timeUiState = MutableStateFlow(TimeUiState())
-    val timeUiState: StateFlow<TimeUiState> = _timeUiState.asStateFlow()
-
-    private val _buttonUiState = MutableStateFlow(
-        ButtonUiState(
-            firstButton = ButtonNames.INTERVAL.value, secondButton = ButtonNames.START.value
-        )
-    )
-    val buttonUiState: StateFlow<ButtonUiState> = _buttonUiState.asStateFlow()
-
-    private val _circlesUiState = MutableStateFlow(CirclesUiState())
-    val circlesUiState: StateFlow<CirclesUiState> = _circlesUiState.asStateFlow()
+    private val _uiState = MutableStateFlow(UiStates())
+    val uiState: StateFlow<UiStates> = _uiState.asStateFlow()
 
     init {
         getState()
     }
 
-    fun start() {
+    fun eventDispatcher(intent: Intent) {
+        when (intent) {
+            Start -> start()
+            SaveState -> saveState()
+            GetState -> getState()
+            ClickLeftButton -> {
+                if (uiState.value.timeUiState.wasRunning) {
+                    setCircle()
+                } else reset()
+            }
+        }
+    }
+
+    private fun start() {
         if (!isStarted && !isContinue) {
             isStarted = true
             isContinue = true
-            val startTime = System.currentTimeMillis() - _timeUiState.value.time
+            val startTime = System.currentTimeMillis() - _uiState.value.timeUiState.time
             startCoroutine(startTime = startTime)
-            _buttonUiState.value = _buttonUiState.value.copy(secondButton = ButtonNames.STOP.value)
-            _timeUiState.value = _timeUiState.value.copy(wasRunning = true)
+            _uiState.value = _uiState.value.copy(
+                buttonUiState = _uiState.value.buttonUiState.copy(secondButton = ButtonNames.STOP.value),
+                timeUiState = _uiState.value.timeUiState.copy(wasRunning = true)
+            )
         } else if (isStarted && isContinue) {
             pause()
         } else if (isStarted) {
@@ -56,70 +66,75 @@ class AppViewModel(val dataStore: AppDataStore) : ViewModel() {
         }
     }
 
-    fun pause() {
+    private fun pause() {
         if (isStarted && isContinue) {
             job?.cancel()
             job = null
             isContinue = false
-            _buttonUiState.value = _buttonUiState.value.copy(
-                firstButton = ButtonNames.RESET.value, secondButton = ButtonNames.CONTINUE.value
+            _uiState.value = _uiState.value.copy(
+                buttonUiState = _uiState.value.buttonUiState.copy(
+                    firstButton = ButtonNames.RESET.value, secondButton = ButtonNames.CONTINUE.value
+                ), timeUiState = _uiState.value.timeUiState.copy(wasRunning = false)
             )
-            _timeUiState.value = _timeUiState.value.copy(wasRunning = false)
         }
     }
 
-    fun proceed() {
+    private fun proceed() {
         if (!isStarted) return
         isContinue = true
-        val startTime = System.currentTimeMillis() - _timeUiState.value.time
+        val startTime = System.currentTimeMillis() - _uiState.value.timeUiState.time
         startCoroutine(startTime = startTime)
-        _buttonUiState.value = _buttonUiState.value.copy(
-            firstButton = ButtonNames.INTERVAL.value, secondButton = ButtonNames.STOP.value
+        _uiState.value = _uiState.value.copy(
+            buttonUiState = _uiState.value.buttonUiState.copy(
+                firstButton = ButtonNames.INTERVAL.value, secondButton = ButtonNames.STOP.value
+            ), timeUiState = _uiState.value.timeUiState.copy(wasRunning = true)
         )
-        _timeUiState.value = _timeUiState.value.copy(wasRunning = true)
     }
 
-    fun reset() {
+    private fun reset() {
         if (isStarted && !isContinue) {
             job?.cancel()
             job = null
             isStarted = false
             isContinue = false
-            _timeUiState.value = _timeUiState.value.copy(time = 0L)
-            _buttonUiState.value = buttonUiState.value.copy(
-                firstButton = ButtonNames.INTERVAL.value, secondButton = ButtonNames.START.value
+            _uiState.value = _uiState.value.copy(
+                timeUiState = _uiState.value.timeUiState.copy(time = 0L, wasRunning = false),
+                buttonUiState = _uiState.value.buttonUiState.copy(
+                    firstButton = ButtonNames.INTERVAL.value, secondButton = ButtonNames.START.value
+                ),
+                circlesUiState = _uiState.value.circlesUiState.copy(emptyList())
             )
             clearTime()
         }
     }
 
-    fun setCircle() {
+    private fun setCircle() {
         if (isStarted && isContinue) {
-            val newList = mutableListOf<Long>()
-            newList.addAll(_circlesUiState.value.list)
-            newList.add(_timeUiState.value.time)
-            _circlesUiState.value = _circlesUiState.value.copy(list = newList)
+            _uiState.value = _uiState.value.copy(
+                circlesUiState = _uiState.value.circlesUiState.copy(
+                    list = mutableListOf<Long>().apply {
+                        add(_uiState.value.timeUiState.time)
+                        addAll(_uiState.value.circlesUiState.list)
+                    })
+            )
         }
     }
 
-    fun clearCircles() {
-        _circlesUiState.value = _circlesUiState.value.copy(emptyList())
-    }
-
-    fun saveState() {
+    private fun saveState() {
         viewModelScope.launch(Dispatchers.IO) {
-            dataStore.saveTime(_timeUiState.value.time)
+            dataStore.saveTime(_uiState.value.timeUiState.time)
             dataStore.saveWasRunning(isContinue)
         }
     }
 
-    fun getState() {
+    private fun getState() {
         if (!isFirstTime) return
         viewModelScope.launch(Dispatchers.IO) {
-            val time = dataStore.getTime().first()
+            val time = dataStore.getTime().firstOrNull() ?: 0
             val wasRunning = dataStore.getWasRunning().first()
-            _timeUiState.value = _timeUiState.value.copy(time = time, wasRunning = wasRunning)
-
+            _uiState.value = _uiState.value.copy(
+                timeUiState = _uiState.value.timeUiState.copy(time = time, wasRunning = wasRunning)
+            )
             if (wasRunning) {
                 proceed()
             }
@@ -135,20 +150,20 @@ class AppViewModel(val dataStore: AppDataStore) : ViewModel() {
     }
 
     private fun startCoroutine(startTime: Long) {
-        job = viewModelScope.launch(Dispatchers.Default) {
+        job = viewModelScope.launch(Dispatchers.IO) {
             while (isActive) {
-                _timeUiState.value =
-                    _timeUiState.value.copy(time = System.currentTimeMillis() - startTime)
+                withContext(Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(
+                        timeUiState = _uiState.value.timeUiState.copy(time = System.currentTimeMillis() - startTime)
+                    )
+                }
+//                delay(1000)
             }
         }
     }
-}
 
-class AppViewModelFactory(private val dataStore: AppDataStore) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AppViewModel::class.java)) {
-            return AppViewModel(dataStore) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel()
     }
 }

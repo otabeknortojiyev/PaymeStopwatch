@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 
 const val timeKey: String = "Time"
 const val wasRunningKey: String = "WasRunning"
+const val isFirstKey: String = "IsFirst"
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
 
@@ -34,5 +35,15 @@ class AppDataStoreImpl(val context: Context) : AppDataStore {
 
     override fun getWasRunning(): Flow<Boolean> = context.dataStore.data.map { pref ->
         return@map pref[booleanPreferencesKey(wasRunningKey)] ?: false
+    }
+
+    override suspend fun saveIsFirst(isFirst: Boolean) {
+        context.dataStore.edit { pref ->
+            pref[booleanPreferencesKey(isFirstKey)] = isFirst
+        }
+    }
+
+    override fun getIsFirst(): Flow<Boolean> = context.dataStore.data.map { pref ->
+        return@map pref[booleanPreferencesKey(isFirstKey)] ?: true
     }
 }
