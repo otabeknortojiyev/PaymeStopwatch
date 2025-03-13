@@ -7,10 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import uz.payme.otabek.data.AppDataStoreImpl
 import uz.payme.otabek.presentation.screens.main.AppViewModel
@@ -19,7 +16,6 @@ import uz.payme.otabek.presentation.screens.main.MainScreen
 import uz.payme.otabek.ui.theme.PaymeStopwatchTheme
 import kotlin.getValue
 import uz.payme.otabek.R
-import java.util.Stack
 
 class MainActivity : ComponentActivity() {
     private val viewModel: AppViewModel by viewModels {
