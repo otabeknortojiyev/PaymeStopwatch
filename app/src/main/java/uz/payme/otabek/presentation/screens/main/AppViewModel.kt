@@ -31,10 +31,6 @@ class AppViewModel(val dataStore: AppDataStore) : ViewModel() {
     private val _uiState = MutableStateFlow(UiStates())
     val uiState: StateFlow<UiStates> = _uiState.asStateFlow()
 
-    init {
-        getState()
-    }
-
     fun eventDispatcher(intent: Intent) {
         when (intent) {
             Start -> start()

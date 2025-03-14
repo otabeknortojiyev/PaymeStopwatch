@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PaymeStopwatch"
+rootProject.name = "PaymeApp"
 include(":app")
  
