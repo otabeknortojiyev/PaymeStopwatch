@@ -15,7 +15,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uz.payme.otabek.R
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.StopWatchUiStates
 import uz.payme.otabek.utils.formatTime
+import javax.inject.Inject
 
 const val CHANNEL_ID = "timer_channel"
 const val STOP_SERVICE = "STOP_SERVICE"
@@ -35,7 +37,7 @@ class StopWatchService : Service() {
         createNotificationChannel()
     }
 
-    fun observeTimeFlow(timeFlow: StateFlow<StopWatchModelContract.UiStates>) {
+    fun observeTimeFlow(timeFlow: StateFlow<StopWatchUiStates>) {
         job?.cancel()
         job = CoroutineScope(Dispatchers.Main).launch {
             timeFlow.collect { uiState ->

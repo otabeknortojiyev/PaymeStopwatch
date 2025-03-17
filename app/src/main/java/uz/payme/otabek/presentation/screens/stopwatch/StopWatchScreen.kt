@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,16 +26,32 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.UiStates
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.StopWatchUiStates
 import uz.payme.otabek.utils.ActivityLifecycleListener
 import uz.payme.otabek.utils.formatCircleTime
 import uz.payme.otabek.utils.formatTime
 
 @Composable
 fun StopWatchScreen(
+    modifier: Modifier = Modifier, startPlayer: () -> Unit, resetPlayer: () -> Unit
+) {
+    val viewModel: StopWatchViewModel = viewModel()
+    val uiState = viewModel.uiState.collectAsState()
+    StopWatchScreenContent(
+        modifier = modifier,
+        uiStates = uiState,
+        eventDispatcher = viewModel::eventDispatcher,
+        startPlayer = startPlayer,
+        resetPlayer = resetPlayer
+    )
+}
+
+@Composable
+private fun StopWatchScreenContent(
     modifier: Modifier = Modifier,
-    uiStates: State<UiStates>,
+    uiStates: State<StopWatchUiStates>,
     eventDispatcher: (Intent) -> Unit,
     startPlayer: () -> Unit,
     resetPlayer: () -> Unit

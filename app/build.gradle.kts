@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "2.0.20"
+
 }
 
 android {
@@ -17,14 +21,20 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            )
+
+            buildConfigField("String", "OPEN_WEATHER_API_KEY", "\"62b18818f899c80e1d2f4285220bc90b\"")
+
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -32,9 +42,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -61,4 +68,21 @@ dependencies {
 
     //DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    //DAGGER_HILT
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    //Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+
+    //Gson
+    implementation(libs.gson)
+
+    //network
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 }

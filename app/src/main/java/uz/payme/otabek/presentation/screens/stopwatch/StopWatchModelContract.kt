@@ -5,7 +5,7 @@ import uz.payme.otabek.utils.ButtonNames
 
 interface StopWatchModelContract {
     @Stable
-    data class UiStates(
+    data class StopWatchUiStates(
         val timeUiState: TimeUiState = TimeUiState(),
         val buttonUiState: ButtonUiState = ButtonUiState(),
         val circlesUiState: CirclesUiState = CirclesUiState()

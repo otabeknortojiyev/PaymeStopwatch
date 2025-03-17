@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name=".app.PaymeApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,7 +19,7 @@
         tools:targetApi="31">
 
         <service
-            android:name=".presentation.screens.stopwatch.AppService"
+            android:name=".presentation.screens.stopwatch.StopWatchService"
             android:description="@string/app_name"
             android:exported="false"
             android:foregroundServiceType="specialUse">

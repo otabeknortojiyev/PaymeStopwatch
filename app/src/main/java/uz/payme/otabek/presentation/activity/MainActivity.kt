@@ -4,7 +4,6 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,36 +35,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import uz.payme.otabek.data.AppDataStoreImpl
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchViewModel
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelFactory
 import uz.payme.otabek.ui.theme.PaymeStopwatchTheme
-import kotlin.getValue
 import uz.payme.otabek.R
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreen
+import uz.payme.otabek.presentation.screens.weather.WeatherScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel: StopWatchViewModel by viewModels {
-        StopWatchModelFactory(AppDataStoreImpl(this))
-    }/*
-        private var service: AppService? = null
-        private var bound = false
-
-        private val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                val localBinder = binder as? AppService.LocalBinder
-                service = localBinder?.getService()
-                bound = true
-                service?.observeTimeFlow(viewModel.uiState)
-            }
-
-            override fun onServiceDisconnected(name: ComponentName?) {
-                service = null
-                bound = false
-            }
-        }*/
 
     private var startStopPlayer: MediaPlayer? = null
     private var resetPlayer: MediaPlayer? = null
@@ -82,7 +60,6 @@ class MainActivity : ComponentActivity() {
         resetPlayer = MediaPlayer.create(this, R.raw.breeze)
 
         setContent {
-            val uiStates = viewModel.uiState.collectAsState()
             PaymeStopwatchTheme {
                 val items = listOf(
                     NavigationItem(
@@ -156,15 +133,12 @@ class MainActivity : ComponentActivity() {
                             when (selectedItemIndex) {
                                 0 -> StopWatchScreen(
                                     modifier = Modifier.padding(paddingValues),
-                                    uiStates = uiStates,
-                                    eventDispatcher = { intent -> viewModel.eventDispatcher(intent) },
                                     startPlayer = { startStopPlayer?.start() },
-                                    resetPlayer = { resetPlayer?.start() }
-                                )
+                                    resetPlayer = { resetPlayer?.start() })
 
                                 1 -> WeatherScreen(
                                     modifier = Modifier.padding(paddingValues)
-                                ) // Ваш WeatherScreen
+                                )
                             }
                         }
                     }

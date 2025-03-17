@@ -2,6 +2,7 @@ package uz.payme.otabek.presentation.screens.stopwatch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,24 +13,26 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import uz.payme.otabek.data.AppDataStore
+import uz.payme.otabek.data.repository.DataStoreRepository
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.ClickLeftButton
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.GetState
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.SaveState
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.Start
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.UiStates
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.StopWatchUiStates
 import uz.payme.otabek.utils.ButtonNames
+import javax.inject.Inject
 
-class StopWatchViewModel(val dataStore: AppDataStore) : ViewModel() {
+@HiltViewModel
+class StopWatchViewModel @Inject constructor(private val dataStore: DataStoreRepository) : ViewModel() {
     private var job: Job? = null
 
     private var isStarted: Boolean = false
     private var isContinue: Boolean = false
     private var isFirstTime: Boolean = true
 
-    private val _uiState = MutableStateFlow(UiStates())
-    val uiState: StateFlow<UiStates> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(StopWatchUiStates())
+    val uiState: StateFlow<StopWatchUiStates> = _uiState.asStateFlow()
 
     fun eventDispatcher(intent: Intent) {
         when (intent) {
@@ -152,7 +155,6 @@ class StopWatchViewModel(val dataStore: AppDataStore) : ViewModel() {
                         timeUiState = _uiState.value.timeUiState.copy(time = System.currentTimeMillis() - startTime)
                     )
                 }
-//                delay(1000)
             }
         }
     }
