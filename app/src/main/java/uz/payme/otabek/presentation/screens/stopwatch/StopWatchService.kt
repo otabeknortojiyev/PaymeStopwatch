@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 import uz.payme.otabek.R
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.StopWatchUiStates
 import uz.payme.otabek.utils.formatTime
-import javax.inject.Inject
 
 const val CHANNEL_ID = "timer_channel"
 const val STOP_SERVICE = "STOP_SERVICE"
