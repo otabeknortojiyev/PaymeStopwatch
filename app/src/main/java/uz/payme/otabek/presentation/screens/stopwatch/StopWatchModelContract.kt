@@ -1,9 +1,9 @@
-package uz.payme.otabek.presentation.screens.main
+package uz.payme.otabek.presentation.screens.stopwatch
 
 import androidx.compose.runtime.Stable
 import uz.payme.otabek.utils.ButtonNames
 
-interface AppViewModelContract {
+interface StopWatchModelContract {
     @Stable
     data class UiStates(
         val timeUiState: TimeUiState = TimeUiState(),

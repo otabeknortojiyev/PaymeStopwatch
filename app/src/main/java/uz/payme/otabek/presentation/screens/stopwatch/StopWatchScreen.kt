@@ -1,6 +1,5 @@
-package uz.payme.otabek.presentation.screens.main
+package uz.payme.otabek.presentation.screens.stopwatch
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -27,21 +25,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import uz.payme.otabek.presentation.screens.main.AppViewModelContract.Intent
-import uz.payme.otabek.presentation.screens.main.AppViewModelContract.UiStates
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.UiStates
 import uz.payme.otabek.utils.ActivityLifecycleListener
 import uz.payme.otabek.utils.formatCircleTime
 import uz.payme.otabek.utils.formatTime
 
 @Composable
-fun MainScreen(
+fun StopWatchScreen(
     modifier: Modifier = Modifier,
     uiStates: State<UiStates>,
     eventDispatcher: (Intent) -> Unit,
     startPlayer: () -> Unit,
     resetPlayer: () -> Unit
 ) {
-
     LaunchedEffect(Unit) {
         eventDispatcher(Intent.GetState)
     }
@@ -87,7 +84,6 @@ fun MainScreen(
                 }
             }
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -113,7 +109,6 @@ fun MainScreen(
                     maxLines = 1
                 )
             }
-
             Button(
                 onClick = {
                     eventDispatcher(Intent.Start)
@@ -136,7 +131,6 @@ fun MainScreen(
             }
         }
     }
-
     ActivityLifecycleListener {
         when (it) {
             Lifecycle.Event.ON_RESUME -> eventDispatcher(Intent.GetState)
