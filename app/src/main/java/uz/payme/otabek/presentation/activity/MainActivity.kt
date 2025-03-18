@@ -113,14 +113,14 @@ class MainActivity : ComponentActivity() {
                                 items.forEachIndexed { index, item ->
                                     NavigationDrawerItem(
                                         label = {
-                                            Text(
-                                                text = item.title,
-                                                color = if (index == selectedItemIndex) Color.White else Color.LightGray,
-                                                fontWeight = if (index == selectedItemIndex) FontWeight.Bold else FontWeight.Normal,
-                                                fontSize = 16.sp,
-                                                modifier = Modifier.padding(vertical = 8.dp)
-                                            )
-                                        },
+                                        Text(
+                                            text = item.title,
+                                            color = if (index == selectedItemIndex) Color.White else Color.LightGray,
+                                            fontWeight = if (index == selectedItemIndex) FontWeight.Bold else FontWeight.Normal,
+                                            fontSize = 16.sp,
+                                            modifier = Modifier.padding(vertical = 8.dp)
+                                        )
+                                    },
                                         selected = index == selectedItemIndex,
                                         onClick = {
                                             selectedItemIndex = index
@@ -164,36 +164,36 @@ class MainActivity : ComponentActivity() {
                             topBar = {
                                 TopAppBar(
                                     colors = TopAppBarColors(
-                                        containerColor = Color(0xFF5999e0),
-                                        scrolledContainerColor = Color.Transparent,
-                                        navigationIconContentColor = Color.White,
-                                        titleContentColor = Color.White,
-                                        actionIconContentColor = Color.White
-                                    ), title = {
-                                        Row(
-                                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            Text(text = items[selectedItemIndex].screenTitle)
-                                            when (selectedItemIndex) {
-                                                1 -> Image(
-                                                    painter = painterResource(R.drawable.location),
-                                                    contentDescription = "Location",
-                                                    modifier = Modifier
-                                                        .width(16.dp)
-                                                        .height(16.dp)
-                                                )
-                                            }
+                                    containerColor = Color(0xFF5999e0),
+                                    scrolledContainerColor = Color.Transparent,
+                                    navigationIconContentColor = Color.White,
+                                    titleContentColor = Color.White,
+                                    actionIconContentColor = Color.White
+                                ), title = {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(text = items[selectedItemIndex].screenTitle)
+                                        when (selectedItemIndex) {
+                                            1 -> Image(
+                                                painter = painterResource(R.drawable.location),
+                                                contentDescription = "Location",
+                                                modifier = Modifier
+                                                    .width(16.dp)
+                                                    .height(16.dp)
+                                            )
                                         }
-                                    }, navigationIcon = {
-                                        IconButton(onClick = {
-                                            scope.launch {
-                                                drawerState.open()
-                                            }
-                                        }) {
-                                            Icon(Icons.Default.Menu, contentDescription = "Menu")
+                                    }
+                                }, navigationIcon = {
+                                    IconButton(onClick = {
+                                        scope.launch {
+                                            drawerState.open()
                                         }
-                                    })
+                                    }) {
+                                        Icon(Icons.Default.Menu, contentDescription = "Menu")
+                                    }
+                                })
                             }) { paddingValues ->
                             when (selectedItemIndex) {
                                 0 -> StopWatchScreen(
