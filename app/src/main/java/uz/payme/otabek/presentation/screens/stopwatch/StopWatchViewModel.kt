@@ -14,12 +14,12 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import uz.payme.otabek.data.repository.DataStoreRepository
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.ClickLeftButton
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.GetState
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.SaveState
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent.Start
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.StopWatchUiStates
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.ClickLeftButton
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.GetState
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.SaveState
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.Start
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.StopWatchUiStates
 import uz.payme.otabek.utils.ButtonNames
 import javax.inject.Inject
 

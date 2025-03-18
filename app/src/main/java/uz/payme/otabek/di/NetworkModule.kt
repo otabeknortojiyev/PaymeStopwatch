@@ -1,6 +1,7 @@
 package uz.payme.otabek.di
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -22,10 +23,10 @@ class NetworkProvider {
 
     @[Provides Singleton]
     fun providesOkHttpClient(@ApplicationContext context: Context): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor { chain ->
+        OkHttpClient.Builder().addInterceptor(ChuckerInterceptor.Builder(context).build())/*.addInterceptor { chain ->
             val request = chain.request()
             chain.proceed(request)
-        }.build()
+        }*/.build()
 
     @[Provides Singleton]
     fun providesWeatherRetrofit(okHttpClient: OkHttpClient): Retrofit =

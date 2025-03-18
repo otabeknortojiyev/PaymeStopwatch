@@ -63,6 +63,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    implementation(libs.accompanist.systemuicontroller) // Check for the latest version
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.foundation)
+    implementation (libs.accompanist.pager)
+
     //ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
@@ -85,4 +91,12 @@ dependencies {
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+
+    //Chucker
+    debugImplementation(libs.library)
+    releaseImplementation(libs.library.no.op)
+
+    //Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }

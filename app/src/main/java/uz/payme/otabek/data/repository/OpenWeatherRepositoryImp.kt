@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class OpenWeatherRepositoryImp @Inject constructor(private val weatherApi: WeatherApi) : OpenWeatherRepository {
 
-    override suspend fun getCurrentWeather(lat: String, lon: String): Result<CoordinatesResponse> {
+    override suspend fun getCurrentWeather(): Result<CoordinatesResponse> {
         return try {
-            val response = weatherApi.current(lat, lon)
+            val response = weatherApi.current("41.311081", "69.240562")
             if (response.cod in 200..299) {
                 Result.success(response)
             } else {
@@ -21,9 +21,9 @@ class OpenWeatherRepositoryImp @Inject constructor(private val weatherApi: Weath
         }
     }
 
-    override suspend fun getForecastWeather(lat: String, lon: String): Result<ForecastResponse> {
+    override suspend fun getForecastWeather(): Result<ForecastResponse> {
         return try {
-            val response = weatherApi.forecast(lat, lon)
+            val response = weatherApi.forecast("41.311081", "69.240562")
             if (response.cod?.toInt() in 200..299) {
                 Result.success(response)
             } else {

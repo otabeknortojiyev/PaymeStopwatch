@@ -34,7 +34,7 @@ data class CoordinatesResponse(
     @SerialName("name")
     val name: String? = null,
     @SerialName("cod")
-    val cod: Int
+    val cod: Int? = null
 )
 
 @Serializable

@@ -15,7 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uz.payme.otabek.R
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.StopWatchUiStates
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.StopWatchUiStates
 import uz.payme.otabek.utils.formatTime
 
 const val CHANNEL_ID = "timer_channel"

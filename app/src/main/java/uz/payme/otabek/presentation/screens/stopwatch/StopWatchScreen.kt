@@ -27,8 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.Intent
-import uz.payme.otabek.presentation.screens.stopwatch.StopWatchModelContract.StopWatchUiStates
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent
+import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.StopWatchUiStates
 import uz.payme.otabek.utils.ActivityLifecycleListener
 import uz.payme.otabek.utils.formatCircleTime
 import uz.payme.otabek.utils.formatTime
@@ -62,13 +63,13 @@ private fun StopWatchScreenContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFFFFFFF)),
+            .background(Color(0xFF5999e0)),
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = formatTime(uiStates.value.timeUiState.time),
-            color = Color.Black,
+            color = Color.White,
             fontSize = 64.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 24.dp)
@@ -131,7 +132,7 @@ private fun StopWatchScreenContent(
                     eventDispatcher(Intent.Start)
                     startPlayer()
                 }, colors = ButtonDefaults.buttonColors(
-                    containerColor = if (uiStates.value.timeUiState.wasRunning) Color.Red else Color.Blue,
+                    containerColor = if (uiStates.value.timeUiState.wasRunning) Color.Red else Color.White,
                     contentColor = Color.White
                 ), shape = RoundedCornerShape(12.dp), modifier = Modifier
                     .weight(1f)
@@ -143,7 +144,8 @@ private fun StopWatchScreenContent(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
+                    maxLines = 1,
+                    color = Color.Black
                 )
             }
         }
@@ -155,4 +157,7 @@ private fun StopWatchScreenContent(
             else -> Unit
         }
     }
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(Color(0xFF5999e0))
+    systemUiController.setNavigationBarColor(Color(0xFF5999e0))
 }
