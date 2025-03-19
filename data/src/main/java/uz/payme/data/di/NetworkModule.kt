@@ -1,4 +1,4 @@
-package uz.payme.otabek.di
+package uz.payme.data.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -27,6 +27,7 @@ class NetworkProvider {
             val request = chain.request()
             chain.proceed(request)
         }*/.build()
+    // TODO difference between network and application interceptors Retrofit
 
     @[Provides Singleton]
     fun providesWeatherRetrofit(okHttpClient: OkHttpClient): Retrofit =

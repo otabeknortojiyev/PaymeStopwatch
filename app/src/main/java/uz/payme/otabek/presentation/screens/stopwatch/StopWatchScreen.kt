@@ -82,7 +82,7 @@ private fun StopWatchScreenContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp, horizontal = 16.dp)
-                        .background(Color(0xFFEFEFEF), shape = RoundedCornerShape(8.dp))
+                        .background(Color(0xFF528fd7), shape = RoundedCornerShape(8.dp))
                         .padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -91,13 +91,13 @@ private fun StopWatchScreenContent(
                         text = (uiStates.value.circlesUiState.list.size - index).toString(),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color.DarkGray
+                        color = Color.White
                     )
                     Text(
                         text = formatCircleTime(item),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color.Black
+                        color = Color.White
                     )
                 }
             }

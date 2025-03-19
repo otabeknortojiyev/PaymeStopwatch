@@ -1,4 +1,4 @@
-package uz.payme.otabek.di
+package uz.payme.data.di
 
 import dagger.Binds
 import dagger.Module
@@ -13,6 +13,8 @@ import uz.payme.otabek.data.repository.OpenWeatherRepositoryImp
 @Module
 @InstallIn(SingletonComponent::class)
 interface RepositoryModule {
+
+    // TODO bind/provides
 
     @[Binds Singleton]
     fun bindDataStoreRepository(impl: DataStoreRepositoryImpl): DataStoreRepository

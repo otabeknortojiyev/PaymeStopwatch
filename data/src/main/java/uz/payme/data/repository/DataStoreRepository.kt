@@ -1,4 +1,4 @@
-package uz.payme.otabek.data.repository
+package uz.payme.data.repository
 
 import kotlinx.coroutines.flow.Flow
 
@@ -10,3 +10,5 @@ interface DataStoreRepository {
     suspend fun saveIsFirst(isFirst: Boolean)
     fun getIsFirst(): Flow<Boolean>
 }
+
+// TODO why suspend/flow is a bad practice

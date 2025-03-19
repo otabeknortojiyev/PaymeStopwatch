@@ -64,7 +64,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-    implementation(libs.accompanist.systemuicontroller) // Check for the latest version
+    //UI
+    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.material)
     implementation(libs.androidx.foundation)
     implementation (libs.accompanist.pager)
@@ -72,31 +73,13 @@ dependencies {
     //ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    //DataStore
-    implementation(libs.androidx.datastore.preferences)
-
     //DAGGER_HILT
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    //Coroutines
-    implementation(libs.kotlinx.coroutines.android)
-
-    //Gson
-    implementation(libs.gson)
-
-    //network
-    implementation(libs.retrofit)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-
-    //Chucker
-    debugImplementation(libs.library)
-    releaseImplementation(libs.library.no.op)
-
     //Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    implementation(project(":domain"))
 }

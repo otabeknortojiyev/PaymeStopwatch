@@ -84,6 +84,7 @@ class MainActivity : ComponentActivity() {
             PaymeStopwatchTheme {
                 val items = listOf(
                     NavigationItem(
+                        // TODO hard coded string literals stringResource(R.string.blabla)
                         title = "Секундомер",
                         selectedIcon = R.drawable.timer_blue,
                         unselectedIcon = R.drawable.timer_gray,

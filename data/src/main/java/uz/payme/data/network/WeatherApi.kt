@@ -1,4 +1,4 @@
-package uz.payme.otabek.data.network
+package uz.payme.data.network
 
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,4 +1,4 @@
-package uz.payme.otabek.data.repository
+package uz.payme.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -36,7 +36,7 @@ class DataStoreRepositoryImpl @Inject constructor(@ApplicationContext val contex
     }
 
     override fun getWasRunning(): Flow<Boolean> = context.dataStore.data.map { pref ->
-        return@map pref[booleanPreferencesKey(wasRunningKey)] ?: false
+        return@map pref[booleanPreferencesKey(wasRunningKey)] == true
     }
 
     override suspend fun saveIsFirst(isFirst: Boolean) {
@@ -46,6 +46,6 @@ class DataStoreRepositoryImpl @Inject constructor(@ApplicationContext val contex
     }
 
     override fun getIsFirst(): Flow<Boolean> = context.dataStore.data.map { pref ->
-        return@map pref[booleanPreferencesKey(isFirstKey)] ?: true
+        return@map pref[booleanPreferencesKey(isFirstKey)] != false
     }
 }

@@ -1,4 +1,4 @@
-package uz.payme.otabek.data.network
+package uz.payme.data.network
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -67,11 +67,8 @@ data class Main(
 
 @Serializable
 data class Wind(
-    @SerialName("speed")
     val speed: Double? = null,
-    @SerialName("deg")
     val deg: Double? = null,
-    @SerialName("gust")
     val gust: Double? = null
 )
 
@@ -83,7 +80,6 @@ data class Rain(
 
 @Serializable
 data class Clouds(
-    @SerialName("all")
     val all: Int? = null
 )
 
@@ -95,28 +91,18 @@ data class Snow(
 
 @Serializable
 data class Sys(
-    @SerialName("type")
     val type: Int? = null,
-    @SerialName("id")
     val id: Int? = null,
-    @SerialName("message")
     val message: String? = null,
-    @SerialName("country")
     val country: String? = null,
-    @SerialName("sunrise")
     val sunrise: Long? = null,
-    @SerialName("sunset")
     val sunset: Long? = null
 )
 
 @Serializable
 data class WeatherBody(
-    @SerialName("id")
     val id: Int? = null,
-    @SerialName("main")
     val main: String? = null,
-    @SerialName("description")
     val description: String? = null,
-    @SerialName("icon")
     val icon: String? = null
 )

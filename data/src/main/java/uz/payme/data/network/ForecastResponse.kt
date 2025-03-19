@@ -1,4 +1,4 @@
-package uz.payme.otabek.data.network
+package uz.payme.data.network
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
