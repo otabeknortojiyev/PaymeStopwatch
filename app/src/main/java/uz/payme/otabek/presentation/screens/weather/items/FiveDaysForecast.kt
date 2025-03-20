@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import uz.payme.otabek.data.network.Per3Hour
+import uz.payme.domain.models.Per3Hour
 import uz.payme.otabek.utils.getDayOfWeekFromDate
 
 @RequiresApi(Build.VERSION_CODES.O)

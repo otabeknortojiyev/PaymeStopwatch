@@ -64,4 +64,6 @@ dependencies {
     //Chucker
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)
+
+    implementation(project(":domain"))
 }

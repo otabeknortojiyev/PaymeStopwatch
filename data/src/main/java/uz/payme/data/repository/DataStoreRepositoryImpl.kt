@@ -10,6 +10,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import uz.payme.domain.repository.DataStoreRepository
 import javax.inject.Inject
 
 const val timeKey: String = "Time"

@@ -1,15 +1,15 @@
 package uz.payme.otabek.presentation.screens.weather
 
 import androidx.compose.runtime.Stable
-import uz.payme.otabek.data.network.CoordinatesResponse
-import uz.payme.otabek.data.network.ForecastResponse
+import uz.payme.domain.models.ForecastModel
+import uz.payme.domain.models.OneCallModel
 
 interface WeatherScreenContract {
     @Stable
     data class WeatherUiStates(
-        val isLoading: Boolean = false,
-        val currentWeather: CoordinatesResponse? = null,
-        val currentForecast: ForecastResponse? = null,
+        val isLoading: Boolean,
+        val currentWeather: OneCallModel? = null,
+        val currentForecast: ForecastModel? = null,
         val errorMessage: String? = null
     )
 

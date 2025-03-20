@@ -13,7 +13,11 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import uz.payme.otabek.data.repository.DataStoreRepository
+import uz.payme.domain.repository.DataStoreRepository
+import uz.payme.domain.usecase.GetTimeUseCase
+import uz.payme.domain.usecase.GetWasRunningUseCase
+import uz.payme.domain.usecase.SaveTimeUseCase
+import uz.payme.domain.usecase.SaveWasRunningUseCase
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.ClickLeftButton
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.GetState
@@ -24,7 +28,12 @@ import uz.payme.otabek.utils.ButtonNames
 import javax.inject.Inject
 
 @HiltViewModel
-class StopWatchViewModel @Inject constructor(private val dataStore: DataStoreRepository) : ViewModel() {
+class StopWatchViewModel @Inject constructor(
+    private val saveTimeUseCase: SaveTimeUseCase,
+    private val saveWasRunningUseCase: SaveWasRunningUseCase,
+    private val getTimeUseCase: GetTimeUseCase,
+    private val getWasRunningUseCase: GetWasRunningUseCase,
+) : ViewModel() {
     private var job: Job? = null
 
     private var isStarted: Boolean = false
@@ -120,16 +129,16 @@ class StopWatchViewModel @Inject constructor(private val dataStore: DataStoreRep
 
     private fun saveState() {
         viewModelScope.launch(Dispatchers.IO) {
-            dataStore.saveTime(_uiState.value.timeUiState.time)
-            dataStore.saveWasRunning(isContinue)
+            saveTimeUseCase.invoke(_uiState.value.timeUiState.time)
+            saveWasRunningUseCase.invoke(isContinue)
         }
     }
 
     private fun getState() {
         if (!isFirstTime) return
         viewModelScope.launch(Dispatchers.IO) {
-            val time = dataStore.getTime().firstOrNull() ?: 0
-            val wasRunning = dataStore.getWasRunning().first()
+            val time = getTimeUseCase.invoke()
+            val wasRunning = getWasRunningUseCase.invoke()
             _uiState.value = _uiState.value.copy(
                 timeUiState = _uiState.value.timeUiState.copy(time = time, wasRunning = wasRunning)
             )
@@ -143,7 +152,7 @@ class StopWatchViewModel @Inject constructor(private val dataStore: DataStoreRep
 
     private fun clearTime() {
         viewModelScope.launch(Dispatchers.IO) {
-            dataStore.saveTime(0L)
+            saveTimeUseCase.invoke(0L)
         }
     }
 

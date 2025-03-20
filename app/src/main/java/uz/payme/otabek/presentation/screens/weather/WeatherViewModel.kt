@@ -8,22 +8,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import uz.payme.otabek.data.network.CoordinatesResponse
-import uz.payme.otabek.data.network.ForecastResponse
-import uz.payme.otabek.data.repository.OpenWeatherRepository
+import uz.payme.domain.models.ForecastModel
+import uz.payme.domain.models.OneCallModel
+import uz.payme.domain.usecase.GetCurrentWeatherUseCase
+import uz.payme.domain.usecase.GetForecastWeatherUseCase
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.Intent.Init
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.WeatherUiStates
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherViewModel @Inject constructor(private val repository: OpenWeatherRepository) : ViewModel() {
+class WeatherViewModel @Inject constructor(
+    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
+    private val getForecastWeatherUseCase: GetForecastWeatherUseCase
+) : ViewModel() {
     private var job: Job? = null
 
     private val _weatherUiState = MutableStateFlow(WeatherUiStates(isLoading = false))
     val weatherUiState: StateFlow<WeatherUiStates> = _weatherUiState.asStateFlow()
 
-    private val _currentWeather = MutableStateFlow<CoordinatesResponse?>(null)
-    private val _currentForecast = MutableStateFlow<ForecastResponse?>(null)
+    private val _currentWeather = MutableStateFlow<OneCallModel?>(null)
+    private val _currentForecast = MutableStateFlow<ForecastModel?>(null)
 
     fun eventDispatcher(intent: WeatherScreenContract.Intent) {
         when (intent) {
@@ -32,30 +36,34 @@ class WeatherViewModel @Inject constructor(private val repository: OpenWeatherRe
                     isLoading = true, currentWeather = null, currentForecast = null, errorMessage = null
                 )
                 viewModelScope.launch {
-                    val currentWeatherResult = repository.getCurrentWeather()
-                    val forecastWeatherResult = repository.getForecastWeather()
 
-                    if (currentWeatherResult.isSuccess && forecastWeatherResult.isSuccess) {
-                        currentWeatherResult.onSuccess {
-                            _currentWeather.value = it
-                        }
-                        forecastWeatherResult.onSuccess {
-                            _currentForecast.value = it
-                        }
+                    val currentWeatherResult = getCurrentWeatherUseCase.invoke()
+
+                    val forecastWeatherResult = getForecastWeatherUseCase.invoke()
+
+                    currentWeatherResult.onSuccess { model ->
+                        _currentWeather.emit(model)
+                    }.onFailure { exception ->
+
+                    }
+
+                    forecastWeatherResult.onSuccess { model ->
+                        _currentForecast.emit(model)
+                    }.onFailure { exception ->
+
+                    }
+
+                    if (_currentWeather.value != null || _currentForecast.value != null) {
                         _weatherUiState.value = WeatherUiStates(
                             isLoading = false,
                             currentWeather = _currentWeather.value,
                             currentForecast = _currentForecast.value,
                             errorMessage = null
                         )
-                    } else {
-                        val errorMessage = currentWeatherResult.exceptionOrNull()?.message
-                            ?: forecastWeatherResult.exceptionOrNull()?.message
+                    }else {
                         _weatherUiState.value = WeatherUiStates(
                             isLoading = false,
-                            currentWeather = null,
-                            currentForecast = null,
-                            errorMessage = errorMessage
+                            errorMessage = "Error!!!"
                         )
                     }
                 }

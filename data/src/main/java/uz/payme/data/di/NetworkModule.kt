@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import uz.payme.otabek.data.network.WeatherApi
+import uz.payme.data.network.WeatherApi
 import javax.inject.Singleton
 
 @Module
@@ -23,10 +23,8 @@ class NetworkProvider {
 
     @[Provides Singleton]
     fun providesOkHttpClient(@ApplicationContext context: Context): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor(ChuckerInterceptor.Builder(context).build())/*.addInterceptor { chain ->
-            val request = chain.request()
-            chain.proceed(request)
-        }*/.build()
+        OkHttpClient.Builder().addInterceptor(ChuckerInterceptor.Builder(context).build()).build()
+
     // TODO difference between network and application interceptors Retrofit
 
     @[Provides Singleton]
