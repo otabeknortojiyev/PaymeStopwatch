@@ -2,7 +2,7 @@ package uz.payme.data.utils
 
 import com.google.gson.Gson
 import retrofit2.Response
-import uz.payme.data.repository.ErrorMessage
+import uz.payme.data.repository.impl.ErrorMessage
 
 inline fun <T, R> Response<T>.toResult(
     gson: Gson,

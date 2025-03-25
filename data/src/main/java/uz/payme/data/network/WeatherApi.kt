@@ -3,6 +3,8 @@ package uz.payme.data.network
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
+import uz.payme.data.models.weather_response.ForecastResponse
+import uz.payme.data.models.weather_response.OneCallResponse
 
 interface WeatherApi {
     @GET("data/2.5/weather")
@@ -11,7 +13,7 @@ interface WeatherApi {
         @Query("lon") lon: String,
         @Query("lang") lang: String = "ru",
         @Query("appid") appid: String = WEATHER_API_KEY
-    ): Response<CoordinatesResponse>
+    ): Response<OneCallResponse>
 
     @GET("data/2.5/forecast")
     suspend fun forecast(

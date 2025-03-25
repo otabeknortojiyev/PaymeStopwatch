@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PaymeApp</string>
+    <string name="stopwatch">Секундомер</string>
+    <string name="weather">Погода</string>
+    <string name="Tashkent">Ташкент</string>
+    <string name="news">Новости</string>
 </resources>

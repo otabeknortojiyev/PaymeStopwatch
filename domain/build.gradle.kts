@@ -43,4 +43,6 @@ dependencies {
     //DAGGER_HILT
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    implementation(project(":data"))
 }

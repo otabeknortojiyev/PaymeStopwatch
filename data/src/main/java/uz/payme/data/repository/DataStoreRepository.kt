@@ -1,4 +1,4 @@
-package uz.payme.domain.repository
+package uz.payme.data.repository
 
 import kotlinx.coroutines.flow.Flow
 

@@ -15,6 +15,7 @@ import uz.payme.domain.usecase.GetForecastWeatherUseCase
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.Intent.Init
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.WeatherUiStates
 import javax.inject.Inject
+import kotlin.onSuccess
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
@@ -60,7 +61,7 @@ class WeatherViewModel @Inject constructor(
                             currentForecast = _currentForecast.value,
                             errorMessage = null
                         )
-                    }else {
+                    } else {
                         _weatherUiState.value = WeatherUiStates(
                             isLoading = false,
                             errorMessage = "Error!!!"

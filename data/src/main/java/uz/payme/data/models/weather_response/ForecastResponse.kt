@@ -1,4 +1,4 @@
-package uz.payme.data.network
+package uz.payme.data.models.weather_response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -1,6 +1,6 @@
 package uz.payme.domain.usecase.impl
 
-import uz.payme.domain.repository.DataStoreRepository
+import uz.payme.data.repository.DataStoreRepository
 import uz.payme.domain.usecase.SaveWasRunningUseCase
 import javax.inject.Inject
 

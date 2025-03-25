@@ -1,7 +1,7 @@
 package uz.payme.domain.usecase.impl
 
 import kotlinx.coroutines.flow.first
-import uz.payme.domain.repository.DataStoreRepository
+import uz.payme.data.repository.DataStoreRepository
 import uz.payme.domain.usecase.GetWasRunningUseCase
 import javax.inject.Inject
 

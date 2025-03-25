@@ -9,6 +9,7 @@ import uz.payme.domain.usecase.GetCurrentWeatherUseCase
 import uz.payme.domain.usecase.GetForecastWeatherUseCase
 import uz.payme.domain.usecase.GetIsFirstUseCase
 import uz.payme.domain.usecase.GetTimeUseCase
+import uz.payme.domain.usecase.GetTopHeadlinesUseCase
 import uz.payme.domain.usecase.GetWasRunningUseCase
 import uz.payme.domain.usecase.SaveIsFirstUseCase
 import uz.payme.domain.usecase.SaveTimeUseCase
@@ -17,6 +18,7 @@ import uz.payme.domain.usecase.impl.GetCurrentWeatherUseCaseImpl
 import uz.payme.domain.usecase.impl.GetForecastWeatherUseCaseImpl
 import uz.payme.domain.usecase.impl.GetIsFirstUseCaseImpl
 import uz.payme.domain.usecase.impl.GetTimeUseCaseImpl
+import uz.payme.domain.usecase.impl.GetTopHeadlinesUseCaseImpl
 import uz.payme.domain.usecase.impl.GetWasRunningUseCaseImpl
 import uz.payme.domain.usecase.impl.SaveIsFirstUseCaseImpl
 import uz.payme.domain.usecase.impl.SaveTimeUseCaseImpl
@@ -49,4 +51,7 @@ interface UseCaseModule {
 
     @[Binds ViewModelScoped]
     fun bindsGetForecastWeatherUseCase(impl: GetForecastWeatherUseCaseImpl): GetForecastWeatherUseCase
+
+    @[Binds ViewModelScoped]
+    fun bindsGetTopHeadlinesUseCase(impl: GetTopHeadlinesUseCaseImpl): GetTopHeadlinesUseCase
 }

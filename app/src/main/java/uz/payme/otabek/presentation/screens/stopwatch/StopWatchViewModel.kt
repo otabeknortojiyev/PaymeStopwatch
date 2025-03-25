@@ -8,12 +8,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import uz.payme.domain.repository.DataStoreRepository
 import uz.payme.domain.usecase.GetTimeUseCase
 import uz.payme.domain.usecase.GetWasRunningUseCase
 import uz.payme.domain.usecase.SaveTimeUseCase

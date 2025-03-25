@@ -65,5 +65,9 @@ dependencies {
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)
 
-    implementation(project(":domain"))
+    //ROOM
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }

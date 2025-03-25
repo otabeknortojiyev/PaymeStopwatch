@@ -4,10 +4,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import uz.payme.data.repository.DataStoreRepositoryImpl
-import uz.payme.data.repository.OpenWeatherRepositoryImp
-import uz.payme.domain.repository.DataStoreRepository
-import uz.payme.domain.repository.OpenWeatherRepository
+import uz.payme.data.repository.DataStoreRepository
+import uz.payme.data.repository.NewsRepository
+import uz.payme.data.repository.OpenWeatherRepository
+import uz.payme.data.repository.impl.DataStoreRepositoryImpl
+import uz.payme.data.repository.impl.NewsRepositoryImpl
+import uz.payme.data.repository.impl.OpenWeatherRepositoryImp
 import javax.inject.Singleton
 
 @Module
@@ -21,4 +23,8 @@ interface RepositoryModule {
 
     @[Binds Singleton]
     fun bindOpenWeatherRepository(impl: OpenWeatherRepositoryImp): OpenWeatherRepository
+
+    @[Binds Singleton]
+    fun bindNewsRepository(impl: NewsRepositoryImpl): NewsRepository
+
 }

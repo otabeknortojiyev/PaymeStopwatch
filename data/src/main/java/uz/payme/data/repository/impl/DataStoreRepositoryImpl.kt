@@ -1,4 +1,4 @@
-package uz.payme.data.repository
+package uz.payme.data.repository.impl
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -10,16 +10,17 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import uz.payme.domain.repository.DataStoreRepository
+import uz.payme.data.repository.DataStoreRepository
 import javax.inject.Inject
 
 const val timeKey: String = "Time"
 const val wasRunningKey: String = "WasRunning"
 const val isFirstKey: String = "IsFirst"
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
-
 class DataStoreRepositoryImpl @Inject constructor(@ApplicationContext val context: Context) : DataStoreRepository {
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
+
     override suspend fun saveTime(time: Long) {
         context.dataStore.edit { pref ->
             pref[longPreferencesKey(timeKey)] = time
