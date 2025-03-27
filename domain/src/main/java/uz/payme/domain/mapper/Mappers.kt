@@ -1,19 +1,17 @@
 package uz.payme.domain.mapper
 
-import uz.payme.data.models.news_response.NewsResponse
+import uz.payme.data.local.room.NewsEntity
 import uz.payme.data.models.weather_response.OneCallResponse
 import uz.payme.data.models.weather_response.ForecastResponse
 import uz.payme.domain.models.Clouds
 import uz.payme.domain.models.Coordinates
 import uz.payme.domain.models.ForecastModel
 import uz.payme.domain.models.Main
-import uz.payme.domain.models.NewsArticle
 import uz.payme.domain.models.NewsModel
 import uz.payme.domain.models.OneCallModel
 import uz.payme.domain.models.Per3Hour
 import uz.payme.domain.models.Rain
 import uz.payme.domain.models.Snow
-import uz.payme.domain.models.Source
 import uz.payme.domain.models.Sys
 import uz.payme.domain.models.WeatherBody
 import uz.payme.domain.models.WeatherCode
@@ -95,28 +93,34 @@ object ForecastMapper {
     }
 }
 
-object NewsMapper {
-    fun map(response: NewsResponse): NewsModel {
+object NewsEntityMapper {
+    fun map(entity: NewsEntity): NewsModel {
         return NewsModel(
-            status = response.status,
-            totalResults = response.totalResults,
-            articles = response.articles?.map { articles ->
-                NewsArticle(
-                    source = articles.source?.let {
-                        Source(
-                            id = it.id,
-                            name = it.name
-                        )
-                    },
-                    author = articles.author,
-                    title = articles.title,
-                    description = articles.description,
-                    url = articles.url,
-                    urlToImage = articles.urlToImage,
-                    publishedAt = articles.publishedAt,
-                    content = articles.content
-                )
-            }
+            url = entity.url,
+            author = entity.author,
+            title = entity.title,
+            description = entity.description,
+            urlToImage = entity.urlToImage,
+            publishedAt = entity.publishedAt,
+            content = entity.content,
+            sourceName = entity.sourceName,
+            isFavorite = entity.isFavorite
+        )
+    }
+}
+
+object NewsModelMapper {
+    fun map(entity: NewsModel): NewsEntity {
+        return NewsEntity(
+            url = entity.url,
+            author = entity.author,
+            title = entity.title,
+            description = entity.description,
+            urlToImage = entity.urlToImage,
+            publishedAt = entity.publishedAt,
+            content = entity.content,
+            sourceName = entity.sourceName,
+            isFavorite = entity.isFavorite
         )
     }
 }

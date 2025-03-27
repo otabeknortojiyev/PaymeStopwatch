@@ -73,30 +73,31 @@ private fun StopWatchScreenContent(
     }
 
     Scaffold(
-        topBar = { TopAppBar(
-            colors = TopAppBarColors(
-                containerColor = Color(0xFF5999e0),
-                scrolledContainerColor = Color.Transparent,
-                navigationIconContentColor = Color.White,
-                titleContentColor = Color.White,
-                actionIconContentColor = Color.White
-            ), title = {
-                Text(text = stringResource(R.string.stopwatch), color = Color.White)
-            }, navigationIcon = {
-                IconButton(
-                    onClick = navIconClick, colors = IconButtonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.Transparent,
-                        disabledContentColor = Color.Transparent
-                    )
-                ) {
-                    Icon(
-                        Icons.Default.Menu,
-                        contentDescription = "Menu",
-                    )
-                }
-            })
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarColors(
+                    containerColor = Color(0xFF5999e0),
+                    scrolledContainerColor = Color.Transparent,
+                    navigationIconContentColor = Color.White,
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White
+                ), title = {
+                    Text(text = stringResource(R.string.stopwatch), color = Color.White)
+                }, navigationIcon = {
+                    IconButton(
+                        onClick = navIconClick, colors = IconButtonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = Color.White,
+                            disabledContainerColor = Color.Transparent,
+                            disabledContentColor = Color.Transparent
+                        )
+                    ) {
+                        Icon(
+                            Icons.Default.Menu,
+                            contentDescription = "Menu",
+                        )
+                    }
+                })
         }
     ) { paddingValues ->
         Column(
@@ -197,116 +198,6 @@ private fun StopWatchScreenContent(
             }
         }
     }
-    //                        Scaffold(
-//                            topBar = {
-//                                TopAppBar(
-//                                    colors = TopAppBarColors(
-//                                        containerColor = when (selectedItemIndex) {
-//                                            0 -> {
-//                                                Color(0xFF5999e0)
-//                                            }
-//
-//                                            1 -> {
-//                                                Color(0xFF5999e0)
-//                                            }
-//
-//                                            else -> {
-//                                                Color.White
-//                                            }
-//                                        },
-//                                        scrolledContainerColor = Color.Transparent,
-//                                        navigationIconContentColor = Color.White,
-//                                        titleContentColor = Color.White,
-//                                        actionIconContentColor = Color.White
-//                                    ), title = {
-//                                        Row(
-//                                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-//                                            verticalAlignment = Alignment.CenterVertically
-//                                        ) {
-//                                            Text(
-//                                                text = items[selectedItemIndex].screenTitle,
-//                                                color = when (selectedItemIndex) {
-//                                                    0 -> {
-//                                                        Color.White
-//                                                    }
-//
-//                                                    1 -> {
-//                                                        Color.White
-//                                                    }
-//
-//                                                    else -> {
-//                                                        Color.Black
-//                                                    }
-//                                                }
-//                                            )
-//                                            when (selectedItemIndex) {
-//                                                1 -> Image(
-//                                                    painter = painterResource(R.drawable.location),
-//                                                    contentDescription = "Location",
-//                                                    modifier = Modifier
-//                                                        .width(16.dp)
-//                                                        .height(16.dp)
-//                                                )
-//                                            }
-//                                        }
-//                                    }, navigationIcon = {
-//                                        IconButton(
-//                                            onClick = {
-//                                                scope.launch {
-//                                                    drawerState.open()
-//                                                }
-//                                            }, colors = IconButtonColors(
-//                                                containerColor = Color.Transparent,
-//                                                contentColor = when (selectedItemIndex) {
-//                                                    0 -> {
-//                                                        Color.White
-//                                                    }
-//
-//                                                    1 -> {
-//                                                        Color.White
-//                                                    }
-//
-//                                                    else -> {
-//                                                        Color.Black
-//                                                    }
-//                                                },
-//                                                disabledContainerColor = Color.Transparent,
-//                                                disabledContentColor = Color.Transparent
-//                                            )
-//                                        ) {
-//                                            Icon(
-//                                                Icons.Default.Menu,
-//                                                contentDescription = "Menu",
-//                                            )
-//                                        }
-//                                    })
-//                            }) { paddingValues ->
-//                            val systemUiController = rememberSystemUiController()
-//                            when (selectedItemIndex) {
-//                                0 -> {
-//                                    StopWatchScreen(
-//                                        modifier = Modifier.padding(paddingValues),
-//                                        startPlayer = { startStopPlayer?.start() },
-//                                        resetPlayer = { resetPlayer?.start() })
-//                                    systemUiController.setStatusBarColor(Color(0xFF5999e0))
-//                                    systemUiController.setNavigationBarColor(Color(0xFF5999e0))
-//                                }
-//
-//                                1 -> {
-//                                    WeatherScreen(
-//                                        modifier = Modifier.padding(paddingValues),
-//                                    )
-//                                    systemUiController.setStatusBarColor(Color(0xFF5999e0))
-//                                    systemUiController.setNavigationBarColor(Color(0xFF5999e0))
-//                                }
-//
-//                                2 -> {
-//                                    NewsMain(modifier = Modifier.padding(paddingValues))
-//                                    systemUiController.setStatusBarColor(Color(0xFFFFFFFF))
-//                                    systemUiController.setNavigationBarColor(Color(0xFFFFFFFF))
-//                                }
-//                            }
-//                        }
     ActivityLifecycleListener {
         when (it) {
             Lifecycle.Event.ON_RESUME -> eventDispatcher(Intent.GetState)

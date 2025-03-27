@@ -15,9 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -31,7 +29,6 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,7 +37,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.pulltorefresh.pullToRefresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -48,8 +44,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -61,14 +55,12 @@ import coil3.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.WeatherUiStates
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.Intent
 import uz.payme.otabek.presentation.screens.weather.items.DotsIndicatorItem
 import uz.payme.otabek.presentation.screens.weather.items.FiveDayForecast
 import uz.payme.otabek.presentation.screens.weather.items.SmallIcons
 import uz.payme.otabek.presentation.screens.weather.items.SunPagerItem
-import uz.payme.otabek.utils.getDayOfWeekFromDate
 import uz.payme.otabek.utils.kelvinToCelsius
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -117,9 +109,7 @@ private fun WeatherScreenContent(
                         Image(
                             painter = painterResource(R.drawable.location),
                             contentDescription = "Location",
-                            modifier = Modifier
-                                .width(16.dp)
-                                .height(16.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                     }
                 },

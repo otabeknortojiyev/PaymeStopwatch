@@ -1,9 +1,9 @@
 package uz.payme.domain.usecase
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import uz.payme.data.repository.DataStoreRepository
+import javax.inject.Inject
 
-interface GetTimeUseCase {
-
-    suspend operator fun invoke() : Long
-
+class GetTimeUseCase @Inject constructor(private val dataStoreRepository: DataStoreRepository) {
+    suspend operator fun invoke(): Long = dataStoreRepository.getTime().first()
 }

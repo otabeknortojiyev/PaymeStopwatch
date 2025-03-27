@@ -1,9 +1,16 @@
+import com.android.aaptcompiler.isJavaIdentifier
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.0.20"
+}
+
+val localProperties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -21,6 +28,9 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
+            buildConfigField("String", "WEATHER_API_KEY", "\"${localProperties["WEATHER_API_KEY"]}\"")
+            buildConfigField("String", "NEWS_API_KEY", "\"${localProperties["NEWS_API_KEY"]}\"")
         }
     }
     compileOptions {
@@ -30,6 +40,8 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures.buildConfig = true
 }
 
 dependencies {

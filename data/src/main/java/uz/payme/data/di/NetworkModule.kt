@@ -12,9 +12,13 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import uz.payme.data.network.WeatherApi
-import javax.inject.Qualifier
+import javax.inject.Named
 import javax.inject.Singleton
+
+const val WeatherOkHttpClient = "WeatherOkHttpClient"
+const val NewsOkHttpClient = "NewsOkHttpClient"
+const val WeatherRetrofit = "WeatherRetrofit"
+const val NewsRetrofit = "NewsRetrofit"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -24,15 +28,15 @@ class NetworkModule {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    @[Provides Singleton WeatherOkHttpClient]
+    @[Provides Singleton Named(WeatherOkHttpClient)]
     fun providesWeatherOkHttpClient(@ApplicationContext context: Context): OkHttpClient =
         OkHttpClient
             .Builder()
             .addInterceptor(ChuckerInterceptor.Builder(context).build())
             .build()
 
-    @[Provides Singleton WeatherRetrofit]
-    fun providesWeatherRetrofit(@WeatherOkHttpClient okHttpClient: OkHttpClient): Retrofit =
+    @[Provides Singleton Named(WeatherRetrofit)]
+    fun providesWeatherRetrofit(@Named(WeatherOkHttpClient) okHttpClient: OkHttpClient): Retrofit =
         Retrofit
             .Builder()
             .baseUrl("https://api.openweathermap.org/")
@@ -40,8 +44,7 @@ class NetworkModule {
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
 
-
-    @[Provides Singleton NewsOkHttpClient]
+    @[Provides Singleton Named(NewsOkHttpClient)]
     fun providesNewsOkHttpClient(@ApplicationContext context: Context): OkHttpClient =
         OkHttpClient
             .Builder()
@@ -55,8 +58,8 @@ class NetworkModule {
                 chain.proceed(newRequest)
             }.build()
 
-    @[Provides Singleton NewsRetrofit]
-    fun providesNewsRetrofit(@NewsOkHttpClient okHttpClient: OkHttpClient): Retrofit =
+    @[Provides Singleton Named(NewsRetrofit)]
+    fun providesNewsRetrofit(@Named(NewsOkHttpClient) okHttpClient: OkHttpClient): Retrofit =
         Retrofit
             .Builder()
             .baseUrl("https://newsapi.org/")

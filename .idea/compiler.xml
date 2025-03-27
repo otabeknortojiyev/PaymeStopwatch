@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="PaymeApp.common.main" target="11" />
+      <module name="PaymeApp.common.test" target="11" />
       <module name="PaymeStopwatch.app" target="21" />
     </bytecodeTargetLevel>
   </component>

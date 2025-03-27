@@ -25,8 +25,6 @@ android {
         release {
             isMinifyEnabled = false
 
-            buildConfigField("String", "OPEN_WEATHER_API_KEY", "\"62b18818f899c80e1d2f4285220bc90b\"")
-
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 

@@ -1,5 +1,9 @@
 package uz.payme.domain.usecase
 
-interface GetIsFirstUseCase {
-    suspend operator fun invoke() : Boolean
+import kotlinx.coroutines.flow.first
+import uz.payme.data.repository.DataStoreRepository
+import javax.inject.Inject
+
+class GetIsFirstUseCase @Inject constructor(private val dataStoreRepository: DataStoreRepository) {
+    suspend operator fun invoke(): Boolean = dataStoreRepository.getIsFirst().first()
 }

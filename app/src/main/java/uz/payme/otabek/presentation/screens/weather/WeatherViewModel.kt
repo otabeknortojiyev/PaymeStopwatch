@@ -1,6 +1,7 @@
 package uz.payme.otabek.presentation.screens.weather
 
 import androidx.lifecycle.ViewModel
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -16,6 +17,7 @@ import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.Intent
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.WeatherUiStates
 import javax.inject.Inject
 import kotlin.onSuccess
+
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
@@ -37,10 +39,9 @@ class WeatherViewModel @Inject constructor(
                     isLoading = true, currentWeather = null, currentForecast = null, errorMessage = null
                 )
                 viewModelScope.launch {
+                    val currentWeatherResult = getCurrentWeatherUseCase()
 
-                    val currentWeatherResult = getCurrentWeatherUseCase.invoke()
-
-                    val forecastWeatherResult = getForecastWeatherUseCase.invoke()
+                    val forecastWeatherResult = getForecastWeatherUseCase()
 
                     currentWeatherResult.onSuccess { model ->
                         _currentWeather.emit(model)

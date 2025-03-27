@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import uz.payme.data.network.NewsApi
 import uz.payme.data.network.WeatherApi
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -14,8 +15,8 @@ import javax.inject.Singleton
 class ApiModule {
 
     @[Provides Singleton]
-    fun providesWeatherApi(@WeatherRetrofit retrofit: Retrofit): WeatherApi = retrofit.create(WeatherApi::class.java)
+    fun providesWeatherApi(@Named(WeatherRetrofit) retrofit: Retrofit): WeatherApi = retrofit.create(WeatherApi::class.java)
 
     @[Provides Singleton]
-    fun providesNewsApi(@NewsRetrofit retrofit: Retrofit): NewsApi = retrofit.create(NewsApi::class.java)
+    fun providesNewsApi(@Named(NewsRetrofit) retrofit: Retrofit): NewsApi = retrofit.create(NewsApi::class.java)
 }

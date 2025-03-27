@@ -136,8 +136,8 @@ fun NewsMainContent(
         }) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             when (selectedItem) {
-                0 -> NewsScreen()
-                1 -> FavoriteScreen()
+                0 -> NewsScreen(uiState = uiState)
+                1 -> FavoriteScreen(uiState = uiState)
             }
         }
     }

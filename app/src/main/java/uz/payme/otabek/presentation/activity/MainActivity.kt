@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -62,6 +63,8 @@ import uz.payme.otabek.R
 import uz.payme.otabek.presentation.screens.news.NewsMain
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreen
 import uz.payme.otabek.presentation.screens.weather.WeatherScreen
+import javax.inject.Inject
+import kotlin.getValue
 
 val darkTheme = mutableStateOf(false)
 
@@ -72,6 +75,8 @@ class MainActivity : ComponentActivity() {
     private var startStopPlayer: MediaPlayer? = null
 
     private var resetPlayer: MediaPlayer? = null
+
+    private val viewModel by viewModels<MainActivityViewModel>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +90,8 @@ class MainActivity : ComponentActivity() {
         resetPlayer = MediaPlayer.create(this, R.raw.breeze)
 
         setContent {
+
+            darkTheme.value = viewModel.getTheme()
 
             PaymeStopwatchTheme(darkTheme = darkTheme.value) {
 
@@ -176,6 +183,10 @@ class MainActivity : ComponentActivity() {
                                     checked = checked.value, onCheckedChange = {
                                         checked.value = it
                                         darkTheme.value = !darkTheme.value
+                                        viewModel.setTheme(darkTheme.value)
+                                        scope.launch {
+                                            drawerState.close()
+                                        }
                                     }
                                 )
                             }
@@ -187,35 +198,20 @@ class MainActivity : ComponentActivity() {
                                 StopWatchScreen(
                                     startPlayer = { startStopPlayer?.start() },
                                     resetPlayer = { resetPlayer?.start() },
-                                    navIconClick = {
-                                        scope.launch {
-                                            drawerState.open()
-                                        }
-                                    })
+                                    navIconClick = { scope.launch { drawerState.open() } }
+                                )
                                 systemUiController.setStatusBarColor(Color(0xFF5999e0))
                                 systemUiController.setNavigationBarColor(Color(0xFF5999e0))
                             }
 
                             1 -> {
-                                WeatherScreen(
-                                    navIconClick = {
-                                        scope.launch {
-                                            drawerState.open()
-                                        }
-                                    }
-                                )
+                                WeatherScreen(navIconClick = { scope.launch { drawerState.open() } })
                                 systemUiController.setStatusBarColor(Color(0xFF5999e0))
                                 systemUiController.setNavigationBarColor(Color(0xFF5999e0))
                             }
 
                             2 -> {
-                                NewsMain(
-                                    navIconClick = {
-                                        scope.launch {
-                                            drawerState.open()
-                                        }
-                                    }
-                                )
+                                NewsMain(navIconClick = { scope.launch { drawerState.open() } })
                                 systemUiController.setStatusBarColor(MaterialTheme.colorScheme.primary)
                                 systemUiController.setNavigationBarColor(MaterialTheme.colorScheme.primary)
                             }

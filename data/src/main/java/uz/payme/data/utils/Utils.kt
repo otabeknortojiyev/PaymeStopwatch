@@ -4,10 +4,7 @@ import com.google.gson.Gson
 import retrofit2.Response
 import uz.payme.data.repository.impl.ErrorMessage
 
-inline fun <T, R> Response<T>.toResult(
-    gson: Gson,
-    onSuccess: (T) -> Result<R>,
-): Result<R> {
+inline fun <T, R> Response<T>.toResult(gson: Gson, onSuccess: (T) -> Result<R>): Result<R> {
     return if (isSuccessful && body() != null) {
         onSuccess(body()!!)
     } else if (errorBody() != null) {

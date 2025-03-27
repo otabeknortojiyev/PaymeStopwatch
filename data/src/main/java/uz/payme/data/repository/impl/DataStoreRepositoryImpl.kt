@@ -17,9 +17,9 @@ const val timeKey: String = "Time"
 const val wasRunningKey: String = "WasRunning"
 const val isFirstKey: String = "IsFirst"
 
-class DataStoreRepositoryImpl @Inject constructor(@ApplicationContext val context: Context) : DataStoreRepository {
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
+class DataStoreRepositoryImpl @Inject constructor(@ApplicationContext val context: Context) : DataStoreRepository {
 
     override suspend fun saveTime(time: Long) {
         context.dataStore.edit { pref ->
