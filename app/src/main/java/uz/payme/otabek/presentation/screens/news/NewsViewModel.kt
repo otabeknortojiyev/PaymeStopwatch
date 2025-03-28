@@ -16,7 +16,10 @@ import uz.payme.domain.models.NewsModel
 import uz.payme.domain.usecase.DeleteFavoriteNewsUseCase
 import uz.payme.domain.usecase.GetFavoriteNewsUseCase
 import uz.payme.domain.usecase.GetNewsUseCase
+import uz.payme.domain.usecase.UpdateNewsUseCase
+import uz.payme.otabek.presentation.screens.news.NewsScreenContract.Intent.Delete
 import uz.payme.otabek.presentation.screens.news.NewsScreenContract.Intent.Init
+import uz.payme.otabek.presentation.screens.news.NewsScreenContract.Intent.Update
 import uz.payme.otabek.presentation.screens.news.NewsScreenContract.NewsUiStates
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract
 import javax.inject.Inject
@@ -25,6 +28,7 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(
     private val getNewsUseCase: GetNewsUseCase,
     private val getFavoriteNewsUseCase: GetFavoriteNewsUseCase,
+    private val updateFavoriteNewsUseCase: UpdateNewsUseCase,
     private val deleteFavoriteNewsUseCase: DeleteFavoriteNewsUseCase
 ) : ViewModel() {
     private var job: Job? = null
@@ -46,6 +50,19 @@ class NewsViewModel @Inject constructor(
                         }
                     }.launchIn(viewModelScope)
             }
+
+            is Update -> {
+                updateFavoriteNewsUseCase.invoke(data = intent.data)
+
+            }
+
+            is Delete -> {
+
+            }
         }
+    }
+
+    private fun getNews() {
+
     }
 }

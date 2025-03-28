@@ -9,12 +9,12 @@ interface NewsScreenContract {
 
     @Stable
     data class NewsUiStates(
-        val isLoading: Boolean,
-        val news: List<NewsModel>,
-        val errorMessage: String? = null
+        val isLoading: Boolean, val news: List<NewsModel>, val errorMessage: String? = null
     )
 
     sealed interface Intent {
         data class Init(val query: String? = null) : Intent
+        data class Update(val data: NewsModel) : Intent
+        data class Delete(val data: NewsModel) : Intent
     }
 }

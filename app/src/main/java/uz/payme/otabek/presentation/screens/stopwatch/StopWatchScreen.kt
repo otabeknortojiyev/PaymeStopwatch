@@ -35,9 +35,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.lifecycle.HiltViewModel
 import uz.payme.otabek.R
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.StopWatchUiStates
@@ -47,7 +49,7 @@ import uz.payme.otabek.utils.formatTime
 
 @Composable
 fun StopWatchScreen(startPlayer: () -> Unit, resetPlayer: () -> Unit, navIconClick: () -> Unit) {
-    val viewModel: StopWatchViewModel = viewModel()
+    val viewModel: StopWatchViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsState()
     StopWatchScreenContent(
         uiStates = uiState,

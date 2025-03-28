@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
-    kotlin("plugin.serialization") version "2.0.20"
-
 }
 
 android {
@@ -66,18 +64,25 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.material)
     implementation(libs.androidx.foundation)
-    implementation (libs.accompanist.pager)
+    implementation(libs.accompanist.pager)
 
     //ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     //DAGGER_HILT
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
     //Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    //Glide
+    implementation(libs.compose)
+
+    //Navigation Jetpack Compose Integration
+    implementation(libs.androidx.navigation.compose)
 
     implementation(project(":domain"))
 }
