@@ -108,7 +108,8 @@ fun NewsScreen(
                         newsModel = model,
                         itemClick = { action ->
                             actions.invoke(action)
-                        }
+                        },
+                        eventDispatcher = eventDispatcher
                     )
                 }
             }
