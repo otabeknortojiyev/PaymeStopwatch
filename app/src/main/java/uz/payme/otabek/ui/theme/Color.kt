@@ -17,3 +17,4 @@ val ModalDrawerSheetDark = Color(0xFF5999e0)
 val IntervalItemBackDark = Color(0xFF528fd7)
 val WeatherTopBarDark = Color(0xFF5999e0)
 val NewsTabDark = Color(0xFF5999e0)
+

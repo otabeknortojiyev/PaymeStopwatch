@@ -67,7 +67,7 @@ fun FavoriteScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color.White)
+                    .background(color = MaterialTheme.colorScheme.primary)
             ) {
                 items(items = uiState.value.news) { model ->
                     NewsItem(
@@ -78,10 +78,10 @@ fun FavoriteScreen(
                         eventDispatcher = eventDispatcher,
                         forFavorite = true,
                         modifier = Modifier.animateItem(
-                            fadeOutSpec = tween(durationMillis = 500), // более плавное исчезновение
+                            fadeOutSpec = tween(durationMillis = 500),
                             placementSpec = spring(
-                                stiffness = Spring.StiffnessLow,       // мягче перемещение
-                                dampingRatio = Spring.DampingRatioMediumBouncy // можно добавить упругости
+                                stiffness = Spring.StiffnessLow,
+                                dampingRatio = Spring.DampingRatioMediumBouncy
                             )
                         )
                     )

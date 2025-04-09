@@ -72,7 +72,7 @@ fun NewsScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = Color.White)
+                .background(color = MaterialTheme.colorScheme.primary)
                 .horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -81,7 +81,7 @@ fun NewsScreen(
             categoryList.forEachIndexed { index, category ->
                 Text(
                     text = category.name,
-                    color = if (selectedCategoryIndex.intValue == index) Color.Red else Color.Black,
+                    color = if (selectedCategoryIndex.intValue == index) Color.Red else MaterialTheme.colorScheme.onPrimary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier
@@ -92,7 +92,7 @@ fun NewsScreen(
                         }
                         .border(
                             width = 1.dp,
-                            color = if (selectedCategoryIndex.intValue == index) Color.Red else Color.Black,
+                            color = if (selectedCategoryIndex.intValue == index) Color.Red else MaterialTheme.colorScheme.onPrimary,
                             shape = RoundedCornerShape(12.dp)
                         )
                         .padding(vertical = 8.dp, horizontal = 16.dp))
@@ -110,15 +110,10 @@ fun NewsScreen(
             ) {
                 items(items = uiState.value.news, key = { it.url }) { model ->
                     NewsItem(
-                        newsModel = model,
-                        itemClick = { action ->
+                        newsModel = model, itemClick = { action ->
                             actions.invoke(action)
-                        },
-                        eventDispatcher = eventDispatcher,
-                        forFavorite = false,
-                        modifier = Modifier.animateItem(
-                            fadeOutSpec = tween(durationMillis = 500),
-                            placementSpec = spring(
+                        }, eventDispatcher = eventDispatcher, forFavorite = false, modifier = Modifier.animateItem(
+                            fadeOutSpec = tween(durationMillis = 500), placementSpec = spring(
                                 stiffness = Spring.StiffnessLow,
                                 dampingRatio = Spring.DampingRatioMediumBouncy,
                             )

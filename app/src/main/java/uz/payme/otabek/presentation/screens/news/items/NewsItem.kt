@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import uz.payme.otabek.R
@@ -42,11 +43,11 @@ fun NewsItem(
 ) {
     val defaultModifier = Modifier
         .fillMaxWidth()
+        .background(color = MaterialTheme.colorScheme.primary)
         .padding(16.dp)
         .clickable { itemClick.invoke(AppMainScreenAction.OpenWebView(url = newsModel.url)) }
     Column(
-        defaultModifier.then(modifier),
-        horizontalAlignment = Alignment.CenterHorizontally
+        defaultModifier.then(modifier), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         GlideImage(
             model = newsModel.urlToImage,
@@ -71,15 +72,14 @@ fun NewsItem(
                     .clickable {
                         eventDispatcher(
                             NewsScreenContract.Intent.Update(
-                                data = newsModel.copy(isFavorite = !newsModel.isFavorite),
-                                forFavorite = forFavorite
+                                data = newsModel.copy(isFavorite = !newsModel.isFavorite), forFavorite = forFavorite
                             )
                         )
                     }
                     .padding(8.dp))
         }
-        Text(text = newsModel.title ?: "", color = Color.Black, fontSize = 20.sp)
+        Text(text = newsModel.title ?: "", color = MaterialTheme.colorScheme.onPrimary, fontSize = 20.sp)
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = newsModel.description ?: "", color = Color.Black, fontSize = 12.sp)
+        Text(text = newsModel.description ?: "", color = MaterialTheme.colorScheme.onPrimary, fontSize = 12.sp)
     }
 }
