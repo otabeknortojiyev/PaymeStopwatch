@@ -18,9 +18,6 @@ import uz.payme.otabek.R
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.StopWatchUiStates
 import uz.payme.otabek.utils.formatTime
 
-const val CHANNEL_ID = "timer_channel"
-const val STOP_SERVICE = "STOP_SERVICE"
-
 class StopWatchService : Service() {
     private val binder = LocalBinder()
     private var job: Job? = null
@@ -48,7 +45,7 @@ class StopWatchService : Service() {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID, "Таймер Уведомления", NotificationManager.IMPORTANCE_LOW
+                CHANNEL_ID, getString(R.string.notification_timer), NotificationManager.IMPORTANCE_LOW
             )
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
@@ -63,10 +60,14 @@ class StopWatchService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val notification =
-            NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle("Таймер").setContentText("Прошло: $time")
-                .setSmallIcon(R.drawable.timer_blue).setPriority(NotificationCompat.PRIORITY_LOW)
-                .addAction(R.drawable.stop, "Стоп", stopIntent).build()
+        val notification = NotificationCompat
+                .Builder(this, CHANNEL_ID)
+                .setContentTitle(getString(R.string.timer))
+                .setContentText(getString(R.string.gone, time))
+                .setSmallIcon(R.drawable.timer_blue)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .addAction(R.drawable.stop, getString(R.string.stop), stopIntent)
+                .build()
 
         startForeground(1, notification)
     }
@@ -81,6 +82,11 @@ class StopWatchService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         job?.cancel()
+    }
+
+    companion object {
+        private const val CHANNEL_ID = "timer_channel"
+        private const val STOP_SERVICE = "STOP_SERVICE"
     }
 }
 

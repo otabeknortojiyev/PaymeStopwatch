@@ -1,4 +1,4 @@
-package uz.payme.domain.usecase
+package uz.payme.domain.usecase.stopwatch
 
 import kotlinx.coroutines.flow.first
 import uz.payme.data.repository.DataStoreRepository

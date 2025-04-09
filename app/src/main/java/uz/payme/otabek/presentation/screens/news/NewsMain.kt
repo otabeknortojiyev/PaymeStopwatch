@@ -44,9 +44,9 @@ import uz.payme.otabek.presentation.screens.news.NewsScreenContract.NewsUiStates
 
 @Composable
 fun NewsMain(
-     viewModel: NewsViewModel = hiltViewModel(),
-     navIconClick: () -> Unit,
-     actions: (AppMainScreenAction) -> Unit
+    viewModel: NewsViewModel = hiltViewModel(),
+    navIconClick: () -> Unit,
+    actions: (AppMainScreenAction) -> Unit
 ) {
     val uiState = viewModel.newsUiState.collectAsState()
     NewsMainContent(
@@ -67,13 +67,17 @@ fun NewsMainContent(
 ) {
     val items = listOf(
         BottomNavItem(
-            text = "Новости", selectedIcon = R.drawable.news_item_blue, unselectedIcon = R.drawable.news_item_gray
+            text = stringResource(R.string.news),
+            selectedIcon = R.drawable.news_item_blue,
+            unselectedIcon = R.drawable.news_item_gray
         ), BottomNavItem(
-            text = "Избранное", selectedIcon = R.drawable.favorite_blue, unselectedIcon = R.drawable.favorite_gray
+            text = stringResource(R.string.favorite),
+            selectedIcon = R.drawable.favorite_blue,
+            unselectedIcon = R.drawable.favorite_gray
         )
     )
 
-    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
+    var selectedItem by rememberSaveable { mutableIntStateOf(1) }
 
     Scaffold(topBar = {
         TopAppBar(
@@ -83,11 +87,17 @@ fun NewsMainContent(
                 navigationIconContentColor = Color.White,
                 titleContentColor = Color.White,
                 actionIconContentColor = Color.White
-            ), title = {
-                Text(text = stringResource(R.string.news), color = MaterialTheme.colorScheme.onPrimary)
-            }, navigationIcon = {
+            ),
+            title = {
+                Text(
+                    text = stringResource(R.string.news),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            },
+            navigationIcon = {
                 IconButton(
-                    onClick = navIconClick, colors = IconButtonColors(
+                    onClick = navIconClick,
+                    colors = IconButtonColors(
                         containerColor = Color.Transparent,
                         contentColor = MaterialTheme.colorScheme.onPrimary,
                         disabledContainerColor = Color.Transparent,
@@ -96,7 +106,7 @@ fun NewsMainContent(
                 ) {
                     Icon(
                         Icons.Default.Menu,
-                        contentDescription = "Menu",
+                        contentDescription = stringResource(R.string.menu),
                     )
                 }
             })
@@ -133,7 +143,7 @@ fun NewsMainContent(
                         )
                         Text(
                             text = item.text,
-                            color = if (index == selectedItem) Color(0xFF5999e0) else Color(0xFF999999)
+                            color = if (index == selectedItem) MaterialTheme.colorScheme.secondary else Color.Gray
                         )
                     }
                 }
@@ -150,7 +160,12 @@ fun NewsMainContent(
                     }
                 )
 
-                1 -> FavoriteScreen(uiState = uiState)
+                1 -> FavoriteScreen(
+                    uiState = uiState,
+                    eventDispatcher = eventDispatcher,
+                    actions = { action ->
+                        actions.invoke(action)
+                    })
             }
         }
     }

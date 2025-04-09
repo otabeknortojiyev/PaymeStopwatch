@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -78,7 +79,7 @@ private fun StopWatchScreenContent(
         topBar = {
             TopAppBar(
                 colors = TopAppBarColors(
-                    containerColor = Color(0xFF5999e0),
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                     scrolledContainerColor = Color.Transparent,
                     navigationIconContentColor = Color.White,
                     titleContentColor = Color.White,
@@ -96,17 +97,16 @@ private fun StopWatchScreenContent(
                     ) {
                         Icon(
                             Icons.Default.Menu,
-                            contentDescription = "Menu",
+                            contentDescription = stringResource(R.string.menu),
                         )
                     }
                 })
-        }
-    ) { paddingValues ->
+        }) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFF5999e0)),
+                .background(MaterialTheme.colorScheme.primaryContainer),
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -125,7 +125,7 @@ private fun StopWatchScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp, horizontal = 16.dp)
-                            .background(Color(0xFF528fd7), shape = RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.onPrimaryContainer, shape = RoundedCornerShape(8.dp))
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween

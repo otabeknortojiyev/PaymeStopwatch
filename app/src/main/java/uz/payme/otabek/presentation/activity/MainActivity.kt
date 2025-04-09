@@ -45,10 +45,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*Intent(this, AppService::class.java).also { intent ->
-            bindService(intent, serviceConnection, BIND_AUTO_CREATE)
-        }*/
-
         startStopPlayer = MediaPlayer.create(this, R.raw.boop)
         resetPlayer = MediaPlayer.create(this, R.raw.breeze)
 
@@ -101,13 +97,5 @@ class MainActivity : ComponentActivity() {
         resetPlayer?.release()
         startStopPlayer = null
         resetPlayer = null
-        /*if (bound) {
-            unbindService(serviceConnection)
-            bound = false
-        }*/
     }
 }
-
-data class NavigationItem(
-    val title: String, @DrawableRes val selectedIcon: Int, @DrawableRes val unselectedIcon: Int, val screenTitle: String
-)

@@ -12,6 +12,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import uz.payme.data.BuildConfig
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -39,7 +40,7 @@ class NetworkModule {
     fun providesWeatherRetrofit(@Named(WeatherOkHttpClient) okHttpClient: OkHttpClient): Retrofit =
         Retrofit
             .Builder()
-            .baseUrl("https://api.openweathermap.org/")
+            .baseUrl(WEATHER_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
@@ -53,7 +54,7 @@ class NetworkModule {
                 val request = chain.request()
                 val newRequest = request
                     .newBuilder()
-                    .header("X-Api-Key", "30dcfd9b0e9749ea8b06b1462e2a6f83")
+                    .header(HEADER_NAME, BuildConfig.NEWS_API_KEY)
                     .build()
                 chain.proceed(newRequest)
             }.build()
@@ -62,8 +63,14 @@ class NetworkModule {
     fun providesNewsRetrofit(@Named(NewsOkHttpClient) okHttpClient: OkHttpClient): Retrofit =
         Retrofit
             .Builder()
-            .baseUrl("https://newsapi.org/")
+            .baseUrl(NEWS_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
+
+    companion object {
+        private const val WEATHER_BASE_URL: String = "https://api.openweathermap.org/"
+        private const val NEWS_BASE_URL: String = "https://newsapi.org/"
+        private const val HEADER_NAME: String = "X-Api-Key"
+    }
 }

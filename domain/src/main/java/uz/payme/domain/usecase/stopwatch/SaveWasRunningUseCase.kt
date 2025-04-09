@@ -1,4 +1,4 @@
-package uz.payme.domain.usecase
+package uz.payme.domain.usecase.stopwatch
 
 import uz.payme.data.repository.DataStoreRepository
 import javax.inject.Inject

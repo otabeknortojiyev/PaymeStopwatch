@@ -22,6 +22,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(type = "String", name = "WEATHER_API_KEY", value = "\"7fd3fa2b3bf71545e2ff3b1a1f0871a0\"")
+        buildConfigField(type = "String", name = "NEWS_API_KEY", value = "\"30dcfd9b0e9749ea8b06b1462e2a6f83\"")
     }
 
     buildTypes {

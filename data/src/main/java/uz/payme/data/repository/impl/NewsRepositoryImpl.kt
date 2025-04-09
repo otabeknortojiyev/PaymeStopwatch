@@ -16,24 +16,24 @@ import uz.payme.data.mapper.NewsResponseMapper
 import uz.payme.data.models.news_response.NewsResponse
 import uz.payme.data.network.NewsApi
 import uz.payme.data.repository.NewsRepository
+import uz.payme.data.utils.Category
 import uz.payme.data.utils.toResult
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class NewsRepositoryImpl @Inject constructor(
-    private val newsApi: NewsApi, private val newsDao: NewsDao
-) : NewsRepository {
+class NewsRepositoryImpl @Inject constructor(private val newsApi: NewsApi, private val newsDao: NewsDao) :
+    NewsRepository {
 
     private val gson = Gson()
 
-    override fun getNews(query: String?): Flow<Result<List<NewsEntity>>> = flow {
-        emit(Result.success(newsDao.getAll()))
+    override fun getNewsFromNetwork(query: String): Flow<Result<List<NewsEntity>>> = flow {
+        emit(Result.success(newsDao.getAll(query)))
         try {
             val result = newsApi.getEverything(query = query).toResult(gson) { response ->
-                val list = NewsResponseMapper.map(response)
+                val list = NewsResponseMapper.map(response, query)
                 newsDao.insert(list)
-                Result.success(newsDao.getAll())
+                Result.success(newsDao.getAll(query))
             }
             emit(result)
         } catch (e: Exception) {
@@ -41,9 +41,20 @@ class NewsRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+    override fun getNewsFromLocal(query: String): Flow<List<NewsEntity>> = flow {
+        emit(newsDao.getAll(query))
+    }
+
     override fun getFavorites(): List<NewsEntity> = newsDao.getFavorites()
 
-    override fun updateNews(data: NewsEntity) = newsDao.update(data = data)
+    override fun updateNews(data: NewsEntity): Flow<Unit> = flow {
+        newsDao.update(data = data)
+        emit(Unit)
+    }
 
-    override fun deleteNews(data: NewsEntity) = newsDao.delete(data = data)
+    override fun deleteNews(data: NewsEntity): Flow<Unit> = flow {
+        newsDao.delete(data = data)
+        emit(Unit)
+    }
+
 }

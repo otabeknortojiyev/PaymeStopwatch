@@ -1,5 +1,8 @@
 package uz.payme.otabek.presentation.screens.news
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,9 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import uz.payme.otabek.R
 import uz.payme.otabek.presentation.actions_handler.AppMainScreenAction
 import uz.payme.otabek.presentation.screens.news.NewsScreenContract.NewsUiStates
 import uz.payme.otabek.presentation.screens.news.items.NewsItem
@@ -47,12 +52,12 @@ fun NewsScreen(
     val selectedCategoryIndex = rememberSaveable { mutableIntStateOf(0) }
 
     val categoryList = listOf(
-        NewsCategory(name = "Бизнес", queryName = "business"),
-        NewsCategory(name = "Технологии", queryName = "technology"),
-        NewsCategory(name = "Спорт", queryName = "sports"),
-        NewsCategory(name = "Здоровье", queryName = "health"),
-        NewsCategory(name = "Развлечение", queryName = "entertainment"),
-        NewsCategory(name = "Наука", queryName = "science"),
+        NewsCategory(name = stringResource(R.string.business), queryName = "business"),
+        NewsCategory(name = stringResource(R.string.technology), queryName = "technology"),
+        NewsCategory(name = stringResource(R.string.sport), queryName = "sports"),
+        NewsCategory(name = stringResource(R.string.health), queryName = "health"),
+        NewsCategory(name = stringResource(R.string.entertainment), queryName = "entertainment"),
+        NewsCategory(name = stringResource(R.string.science), queryName = "science"),
     )
 
     LaunchedEffect(Unit) {
@@ -83,7 +88,7 @@ fun NewsScreen(
                         .clip(shape = RoundedCornerShape(12.dp))
                         .clickable {
                             selectedCategoryIndex.intValue = index
-
+                            eventDispatcher(NewsScreenContract.Intent.Init(categoryList[index].queryName))
                         }
                         .border(
                             width = 1.dp,
@@ -103,13 +108,21 @@ fun NewsScreen(
                     .fillMaxSize()
                     .background(color = Color.White)
             ) {
-                items(items = uiState.value.news) { model ->
+                items(items = uiState.value.news, key = { it.url }) { model ->
                     NewsItem(
                         newsModel = model,
                         itemClick = { action ->
                             actions.invoke(action)
                         },
-                        eventDispatcher = eventDispatcher
+                        eventDispatcher = eventDispatcher,
+                        forFavorite = false,
+                        modifier = Modifier.animateItem(
+                            fadeOutSpec = tween(durationMillis = 500),
+                            placementSpec = spring(
+                                stiffness = Spring.StiffnessLow,
+                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                            )
+                        )
                     )
                 }
             }

@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,7 +63,7 @@ fun WeatherInfoItem(uiState: State<WeatherUiStates>) {
             )
         }
         Text(
-            text = currentWeather?.weather?.get(0)?.description ?: "Нету описания",
+            text = currentWeather?.weather?.get(0)?.description ?: stringResource(R.string.no_description),
             fontSize = 24.sp,
             fontWeight = FontWeight.Normal,
             color = Color.White
@@ -82,7 +84,7 @@ fun WeatherInfoItem(uiState: State<WeatherUiStates>) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
-                .background(color = Color(0xFF528fd7), shape = RoundedCornerShape(16.dp))
+                .background(color = MaterialTheme.colorScheme.onPrimaryContainer, shape = RoundedCornerShape(16.dp))
         ) {
             Row {
                 HorizontalPager(
@@ -91,15 +93,15 @@ fun WeatherInfoItem(uiState: State<WeatherUiStates>) {
                     when (page) {
                         0 -> SunPagerItem(
                             time = currentWeather?.sys?.sunrise,
-                            text1 = "Не пропустите рассвет",
-                            text2 = "Солнце встанет",
+                            text1 = stringResource(R.string.Dont_miss_the_sunrise),
+                            text2 = stringResource(R.string.the_sun_will_rise),
                             icon = R.drawable.sunrise
                         )
 
                         else -> SunPagerItem(
                             time = currentWeather?.sys?.sunset,
-                            text1 = "Не пропустите закат",
-                            text2 = "Солнце зайдёт",
+                            text1 = stringResource(R.string.Dont_miss_the_sunset),
+                            text2 = stringResource(R.string.the_sun_will_go_down),
                             icon = R.drawable.sunset
                         )
                     }

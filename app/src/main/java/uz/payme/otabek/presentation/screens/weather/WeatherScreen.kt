@@ -82,14 +82,16 @@ fun WeatherScreen(navIconClick: () -> Unit) {
 private fun WeatherScreenContent(
     uiState: State<WeatherUiStates>, eventDispatcher: (Intent) -> Unit, navIconClick: () -> Unit
 ) {
-    LaunchedEffect(Unit) { eventDispatcher(Intent.Init) }
+    LaunchedEffect(Unit) {
+        eventDispatcher(Intent.Init)
+    }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = uiState.value.isLoading, onRefresh = { eventDispatcher(Intent.Init) })
     Scaffold(
         topBar = {
             TopAppBar(
                 colors = TopAppBarColors(
-                    containerColor = Color(0xFF5999e0),
+                    containerColor = MaterialTheme.colorScheme.inversePrimary,
                     scrolledContainerColor = Color.Transparent,
                     navigationIconContentColor = Color.White,
                     titleContentColor = Color.White,
@@ -104,7 +106,7 @@ private fun WeatherScreenContent(
                         Text(text = stringResource(R.string.Tashkent), color = Color.White)
                         Image(
                             painter = painterResource(R.drawable.location),
-                            contentDescription = "Location",
+                            contentDescription = stringResource(R.string.location),
                             modifier = Modifier.size(16.dp)
                         )
                     }
@@ -121,7 +123,7 @@ private fun WeatherScreenContent(
                     ) {
                         Icon(
                             Icons.Default.Menu,
-                            contentDescription = "Menu",
+                            contentDescription = stringResource(R.string.menu),
                         )
                     }
                 })
@@ -135,7 +137,7 @@ private fun WeatherScreenContent(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color(0xFF5999e0))
+                    .background(color = MaterialTheme.colorScheme.inversePrimary)
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally
             ) {

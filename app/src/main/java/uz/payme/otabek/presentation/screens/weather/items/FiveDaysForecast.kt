@@ -21,11 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import uz.payme.domain.models.Per3Hour
+import uz.payme.otabek.R
 import uz.payme.otabek.utils.getDayOfWeekFromDate
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -46,11 +48,14 @@ fun FiveDayForecast(forecast: List<Per3Hour>?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color(0xFF528fd7), shape = RoundedCornerShape(16.dp))
+            .background(color = MaterialTheme.colorScheme.onPrimaryContainer, shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Text(
-            text = "5-дневный прогноз", fontSize = 16.sp, color = Color.White, fontWeight = FontWeight.Bold
+            text = stringResource(R.string.five_day_forecast),
+            fontSize = 16.sp,
+            color = Color.White,
+            fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         repeat(daysCount) { dayIndex ->
@@ -80,23 +85,19 @@ fun DayForecastRow(dayOfWeek: String?, minTemp: Int?, maxTemp: Int?, minTempIcon
             .fillMaxWidth()
             .padding(vertical = 12.dp), contentAlignment = Alignment.Center
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically, modifier = Modifier.align(Alignment.CenterStart)
-        ) {
-            Text(
-                text = dayOfWeek ?: "", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold
-            )
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.align(Alignment.CenterStart)) {
+            Text(text = dayOfWeek ?: "", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
-        Row(
-            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
             minTempIcon?.let {
                 val iconUrl = "https://openweathermap.org/img/wn/$it.png"
                 Row(
                     verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
                 ) {
                     AsyncImage(
-                        model = iconUrl, contentDescription = "Weather icon", modifier = Modifier.size(40.dp)
+                        model = iconUrl,
+                        contentDescription = stringResource(R.string.weather_icon),
+                        modifier = Modifier.size(40.dp)
                     )
                 }
             }
@@ -117,7 +118,9 @@ fun DayForecastRow(dayOfWeek: String?, minTemp: Int?, maxTemp: Int?, minTempIcon
                     verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
                 ) {
                     AsyncImage(
-                        model = iconUrl, contentDescription = "Weather icon", modifier = Modifier.size(40.dp)
+                        model = iconUrl,
+                        contentDescription = stringResource(R.string.weather_icon),
+                        modifier = Modifier.size(40.dp)
                     )
                 }
             }

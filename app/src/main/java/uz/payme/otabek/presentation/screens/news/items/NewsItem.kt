@@ -1,13 +1,16 @@
 package uz.payme.otabek.presentation.screens.news.items
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,13 +34,18 @@ import uz.payme.otabek.presentation.screens.news.NewsScreenContract
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NewsItem(
-    newsModel: NewsModel, itemClick: (AppMainScreenAction) -> Unit, eventDispatcher: (NewsScreenContract.Intent) -> Unit
+    newsModel: NewsModel,
+    itemClick: (AppMainScreenAction) -> Unit,
+    eventDispatcher: (NewsScreenContract.Intent) -> Unit,
+    forFavorite: Boolean,
+    modifier: Modifier
 ) {
+    val defaultModifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .clickable { itemClick.invoke(AppMainScreenAction.OpenWebView(url = newsModel.url)) }
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .clickable { itemClick.invoke(AppMainScreenAction.OpenWebView(url = newsModel.url)) },
+        defaultModifier.then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         GlideImage(
@@ -57,10 +65,19 @@ fun NewsItem(
         ) {
             Image(
                 painter = if (newsModel.isFavorite) painterResource(R.drawable.favorite_blue) else painterResource(R.drawable.favorite_gray),
-                contentDescription = ""
-            )
+                contentDescription = "",
+                modifier = Modifier
+                    .clip(shape = CircleShape)
+                    .clickable {
+                        eventDispatcher(
+                            NewsScreenContract.Intent.Update(
+                                data = newsModel.copy(isFavorite = !newsModel.isFavorite),
+                                forFavorite = forFavorite
+                            )
+                        )
+                    }
+                    .padding(8.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
         Text(text = newsModel.title ?: "", color = Color.Black, fontSize = 20.sp)
         Spacer(modifier = Modifier.height(10.dp))
         Text(text = newsModel.description ?: "", color = Color.Black, fontSize = 12.sp)

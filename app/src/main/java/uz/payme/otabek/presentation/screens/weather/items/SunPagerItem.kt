@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,10 +34,10 @@ fun SunPagerItem(time: Long?, text1: String, text2: String, icon: Int) {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Image(
-                    painter = painterResource(R.drawable.sun), contentDescription = "Sun"
+                    painter = painterResource(R.drawable.sun), contentDescription = stringResource(R.string.sun)
                 )
                 Text(
-                    text = text1, color = Color(0xCCFFFFFF), fontSize = 12.sp, fontWeight = FontWeight.ExtraLight
+                    text = text1, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.ExtraLight
                 )
             }
             Text(
@@ -53,7 +54,7 @@ fun SunPagerItem(time: Long?, text1: String, text2: String, icon: Int) {
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(icon), contentDescription = "Sunrise"
+                painter = painterResource(icon), contentDescription = stringResource(R.string.sunrise)
             )
             Text(
                 text = sunTime, color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Normal

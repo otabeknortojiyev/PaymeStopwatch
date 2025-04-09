@@ -3,6 +3,7 @@ package uz.payme.domain.mapper
 import uz.payme.data.local.room.NewsEntity
 import uz.payme.data.models.weather_response.OneCallResponse
 import uz.payme.data.models.weather_response.ForecastResponse
+import uz.payme.data.utils.Category
 import uz.payme.domain.models.Clouds
 import uz.payme.domain.models.Coordinates
 import uz.payme.domain.models.ForecastModel
@@ -104,23 +105,25 @@ object NewsEntityMapper {
             publishedAt = entity.publishedAt,
             content = entity.content,
             sourceName = entity.sourceName,
-            isFavorite = entity.isFavorite
+            isFavorite = entity.isFavorite,
+            category = entity.category
         )
     }
 }
 
 object NewsModelMapper {
-    fun map(entity: NewsModel): NewsEntity {
+    fun map(model: NewsModel): NewsEntity {
         return NewsEntity(
-            url = entity.url,
-            author = entity.author,
-            title = entity.title,
-            description = entity.description,
-            urlToImage = entity.urlToImage,
-            publishedAt = entity.publishedAt,
-            content = entity.content,
-            sourceName = entity.sourceName,
-            isFavorite = entity.isFavorite
+            url = model.url,
+            author = model.author,
+            title = model.title,
+            description = model.description,
+            urlToImage = model.urlToImage,
+            publishedAt = model.publishedAt,
+            content = model.content,
+            sourceName = model.sourceName,
+            isFavorite = model.isFavorite,
+            category = model.category
         )
     }
 }

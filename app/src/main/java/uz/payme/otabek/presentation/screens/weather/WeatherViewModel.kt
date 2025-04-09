@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import uz.payme.domain.models.ForecastModel
 import uz.payme.domain.models.OneCallModel
-import uz.payme.domain.usecase.GetCurrentWeatherUseCase
-import uz.payme.domain.usecase.GetForecastWeatherUseCase
+import uz.payme.domain.usecase.weather.GetCurrentWeatherUseCase
+import uz.payme.domain.usecase.weather.GetForecastWeatherUseCase
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.Intent.Init
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.WeatherUiStates
 import javax.inject.Inject
@@ -39,9 +39,9 @@ class WeatherViewModel @Inject constructor(
                     isLoading = true, currentWeather = null, currentForecast = null, errorMessage = null
                 )
                 viewModelScope.launch {
-                    val currentWeatherResult = getCurrentWeatherUseCase()
+                    val currentWeatherResult = getCurrentWeatherUseCase(lat = LAT, lon = LON)
 
-                    val forecastWeatherResult = getForecastWeatherUseCase()
+                    val forecastWeatherResult = getForecastWeatherUseCase(lat = LAT, lon = LON)
 
                     currentWeatherResult.onSuccess { model ->
                         _currentWeather.emit(model)
@@ -76,5 +76,10 @@ class WeatherViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         job?.cancel()
+    }
+
+    companion object {
+        private const val LAT: String = "41.311081"
+        private const val LON: String = "69.240562"
     }
 }

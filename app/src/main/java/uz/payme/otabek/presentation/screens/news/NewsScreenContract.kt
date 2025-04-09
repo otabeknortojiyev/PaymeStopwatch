@@ -13,8 +13,9 @@ interface NewsScreenContract {
     )
 
     sealed interface Intent {
-        data class Init(val query: String? = null) : Intent
-        data class Update(val data: NewsModel) : Intent
+        data class Init(val query: String) : Intent
+        data class Update(val data: NewsModel, val forFavorite: Boolean) : Intent
         data class Delete(val data: NewsModel) : Intent
+        data object GetFavorites : Intent
     }
 }

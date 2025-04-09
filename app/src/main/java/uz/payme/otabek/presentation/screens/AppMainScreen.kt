@@ -1,6 +1,7 @@
 package uz.payme.otabek.presentation.screens
 
 import android.os.Build
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -41,7 +42,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import uz.payme.otabek.R
 import uz.payme.otabek.presentation.actions_handler.AppMainScreenAction
-import uz.payme.otabek.presentation.activity.NavigationItem
 import uz.payme.otabek.presentation.activity.darkTheme
 import uz.payme.otabek.presentation.screens.news.NewsMain
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreen
@@ -84,21 +84,21 @@ fun AppMainScreen(
             drawerContent = {
                 ModalDrawerSheet(
                     modifier = Modifier.fillMaxHeight(),
-                    drawerContainerColor = Color(0xFF5999e0),
+                    drawerContainerColor = MaterialTheme.colorScheme.primaryContainer,
                     drawerContentColor = Color.White
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     items.forEachIndexed { index, item ->
                         NavigationDrawerItem(
                             label = {
-                            Text(
-                                text = item.title,
-                                color = if (index == selectedItemIndex) Color.White else Color.LightGray,
-                                fontWeight = if (index == selectedItemIndex) FontWeight.Bold else FontWeight.Normal,
-                                fontSize = 16.sp,
-                                modifier = Modifier.padding(vertical = 8.dp)
-                            )
-                        },
+                                Text(
+                                    text = item.title,
+                                    color = if (index == selectedItemIndex) Color.White else Color.LightGray,
+                                    fontWeight = if (index == selectedItemIndex) FontWeight.Bold else FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.padding(vertical = 8.dp)
+                                )
+                            },
                             selected = index == selectedItemIndex,
                             onClick = {
                                 selectedItemIndex = index
@@ -125,7 +125,7 @@ fun AppMainScreen(
                                 .padding(horizontal = 12.dp, vertical = 8.dp)
                                 .animateContentSize(),
                             colors = NavigationDrawerItemDefaults.colors(
-                                selectedContainerColor = Color(0xFF5999e0),
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                 unselectedContainerColor = Color.Transparent,
                                 selectedTextColor = Color.White,
                                 unselectedTextColor = Color.LightGray,
@@ -140,14 +140,16 @@ fun AppMainScreen(
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Switch(
-                        checked = checked.value, onCheckedChange = {
+                        checked = checked.value,
+                        onCheckedChange = {
                             checked.value = it
                             darkTheme.value = !darkTheme.value
                             setTheme.invoke(darkTheme.value)
                             scope.launch {
                                 drawerState.close()
                             }
-                        })
+                        }
+                    )
                 }
             }, drawerState = drawerState
         ) {
@@ -159,28 +161,30 @@ fun AppMainScreen(
                         resetPlayer = { resetPlayer.invoke() },
                         navIconClick = { scope.launch { drawerState.open() } })
                     systemUiController.apply {
-                        setStatusBarColor(Color(0xFF5999e0))
-                        setNavigationBarColor(Color(0xFF5999e0))
+                        setStatusBarColor(MaterialTheme.colorScheme.primaryContainer)
+                        setNavigationBarColor(MaterialTheme.colorScheme.primaryContainer)
                     }
                 }
 
                 1 -> {
                     WeatherScreen(navIconClick = { scope.launch { drawerState.open() } })
                     systemUiController.apply {
-                        setStatusBarColor(Color(0xFF5999e0))
-                        setNavigationBarColor(Color(0xFF5999e0))
+                        setStatusBarColor(MaterialTheme.colorScheme.primaryContainer)
+                        setNavigationBarColor(MaterialTheme.colorScheme.primaryContainer)
                     }
-                    // TODO colorResource()
                 }
 
                 2 -> {
-                    NewsMain(navIconClick = {
-                        scope.launch {
-                            drawerState.open()
+                    NewsMain(
+                        navIconClick = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        },
+                        actions = { action ->
+                            actions.invoke(action)
                         }
-                    }, actions = { action ->
-                        actions.invoke(action)
-                    })
+                    )
                     systemUiController.apply {
                         setStatusBarColor(MaterialTheme.colorScheme.primary)
                         setNavigationBarColor(MaterialTheme.colorScheme.primary)
@@ -190,3 +194,8 @@ fun AppMainScreen(
         }
     }
 }
+
+
+data class NavigationItem(
+    val title: String, @DrawableRes val selectedIcon: Int, @DrawableRes val unselectedIcon: Int, val screenTitle: String
+)

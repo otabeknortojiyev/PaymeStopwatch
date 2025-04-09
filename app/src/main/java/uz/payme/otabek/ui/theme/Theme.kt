@@ -10,16 +10,24 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import uz.payme.otabek.ui.theme.ModalDrawerSheetLight
 
 private val LightColorScheme = lightColorScheme(
     primary = AppBarLight,
-    onPrimary = TextLight
-
+    onPrimary = TextLight,
+    primaryContainer = ModalDrawerSheetLight,
+    onPrimaryContainer = IntervalItemBackLight,
+    inversePrimary = WeatherTopBarLight,
+    secondary = NewsTabLight
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = AppBarDark,
-    onPrimary = TextDark
+    onPrimary = TextDark,
+    primaryContainer = ModalDrawerSheetDark,
+    onPrimaryContainer = IntervalItemBackDark,
+    inversePrimary = WeatherTopBarDark,
+    secondary = NewsTabDark
 )
 
 @Composable

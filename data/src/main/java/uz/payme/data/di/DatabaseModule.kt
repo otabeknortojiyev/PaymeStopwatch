@@ -19,7 +19,7 @@ class DatabaseModule {
     fun providesDatabase(@ApplicationContext context: Context): NewsDatabase {
         return Room.databaseBuilder(
             context = context, klass = NewsDatabase::class.java, name = "News.db"
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
     @[Provides Singleton]

@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import uz.payme.domain.usecase.GetTimeUseCase
-import uz.payme.domain.usecase.GetWasRunningUseCase
-import uz.payme.domain.usecase.SaveTimeUseCase
-import uz.payme.domain.usecase.SaveWasRunningUseCase
+import uz.payme.domain.usecase.stopwatch.GetTimeUseCase
+import uz.payme.domain.usecase.stopwatch.GetWasRunningUseCase
+import uz.payme.domain.usecase.stopwatch.SaveTimeUseCase
+import uz.payme.domain.usecase.stopwatch.SaveWasRunningUseCase
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.ClickLeftButton
 import uz.payme.otabek.presentation.screens.stopwatch.StopWatchScreenContract.Intent.GetState

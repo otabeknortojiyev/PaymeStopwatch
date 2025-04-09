@@ -58,3 +58,11 @@ fun getDayOfWeekFromDate(context: Context, dateString: String): String {
     }
 }
 
+enum class Category(val value: String) {
+    BUSINESS(value = "business"),
+    TECHNOLOGY(value = "technology"),
+    SPORTS(value = "sports"),
+    HEALTH(value = "health"),
+    ENTERTAINMENT(value = "entertainment"),
+    SCIENCE(value = "science"),
+}

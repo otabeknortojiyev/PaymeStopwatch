@@ -19,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import uz.payme.otabek.R
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.Intent
 import uz.payme.otabek.presentation.screens.weather.WeatherScreenContract.WeatherUiStates
 
@@ -37,13 +39,13 @@ fun ErrorItem(uiState: State<WeatherUiStates>, eventDispatcher: (Intent) -> Unit
         ) {
             Icon(
                 imageVector = Icons.Default.Warning,
-                contentDescription = "Ошибка",
+                contentDescription = stringResource(R.string.error),
                 tint = MaterialTheme.colorScheme.error,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Ошибка: ${uiState.value.errorMessage}",
+                text = "${stringResource(R.string.error)}: ${uiState.value.errorMessage}",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -52,7 +54,7 @@ fun ErrorItem(uiState: State<WeatherUiStates>, eventDispatcher: (Intent) -> Unit
             ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
-                    contentDescription = "Обновить",
+                    contentDescription = stringResource(R.string.update),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }

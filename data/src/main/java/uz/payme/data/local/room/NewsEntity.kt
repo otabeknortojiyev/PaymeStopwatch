@@ -13,5 +13,6 @@ data class NewsEntity(
     val publishedAt: String?,
     val content: String?,
     val sourceName: String?,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val category: String
 )
